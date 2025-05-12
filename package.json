@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "deploy": "vite build && gh-pages -d dist"
   },
+  "homepage": "https://nyun2024.github.io/shin_snapshots/",
   "dependencies": {
     "classnames": "^2.5.1",
     "gh-pages": "^6.3.0",
