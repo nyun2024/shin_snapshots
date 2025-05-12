@@ -31,8 +31,6 @@ const WebCam = () => {
       }
     }
   }, []);
-  console.log(images);
-  console.log(images);
 
   // 카운트다운 시작 후 자동 캡처
   const startCountdown = () => {
