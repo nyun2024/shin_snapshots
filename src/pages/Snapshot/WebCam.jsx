@@ -1,13 +1,61 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import styles from "./WebCam.module.scss";
 import black1 from "@img/frame/black/black1.png";
+import black2 from "@img/frame/black/black2.png";
+import black3 from "@img/frame/black/black3.png";
+import black4 from "@img/frame/black/black4.png";
+const blackFrames = [black1, black2, black3, black4];
+
+const MAX_PHOTOS = 4;
+const STORAGE_KEY = "capturedImages";
 
 const WebCam = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
+  const [countdown, setCountdown] = useState(0); // 카운트다운 표시용
+  const [isCounting, setIsCounting] = useState(false); // 버튼 비활성화 상태
 
+  // localStorage에서 복원
+  useEffect(() => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed)) {
+          setImages(parsed);
+        }
+      } catch (e) {
+        console.error("Failed to parse stored images:", e);
+      }
+    }
+  }, []);
+  console.log(images);
+  console.log(images);
+
+  // 카운트다운 시작 후 자동 캡처
+  const startCountdown = () => {
+    if (images.length >= MAX_PHOTOS || isCounting) return;
+
+    setIsCounting(true);
+    setCountdown(3);
+
+    let current = 3;
+    const interval = setInterval(() => {
+      current -= 1;
+      if (current <= 0) {
+        clearInterval(interval);
+        setCountdown(0);
+        capture();
+        setIsCounting(false);
+      } else {
+        setCountdown(current);
+      }
+    }, 1000);
+  };
+
+  // 실제 캡처 함수
   const capture = () => {
     const video = webcamRef.current.video;
     const canvas = canvasRef.current;
@@ -54,14 +102,23 @@ const WebCam = () => {
     );
     ctx.restore();
 
-    const dataURL = canvas.toDataURL("image/png");
-    setImage(dataURL);
+    const dataURL = canvas.toDataURL("image/jpeg", 0.8);
+    const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
+    setImages(newImages);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(newImages));
+  };
+
+  const clearAll = () => {
+    setImages([]);
+    localStorage.removeItem(STORAGE_KEY);
   };
 
   return (
     <>
       <div className={styles.webCamFrame}>
-        <img src={black1} />
+        {images.length >= MAX_PHOTOS ? null : (
+          <img src={blackFrames[images.length]} alt="Frame" />
+        )}
         <Webcam
           ref={webcamRef}
           mirrored={true}
@@ -73,10 +130,28 @@ const WebCam = () => {
             aspectRatio: "3/4",
           }}
         />
+        {countdown > 0 && (
+          <div className={styles.countdown}>
+            <span>{countdown}</span>
+          </div>
+        )}
       </div>
-      <button onClick={capture}>📸 캡처</button>
+
+      <button
+        onClick={startCountdown}
+        disabled={isCounting || images.length >= MAX_PHOTOS}
+      >
+        📸 캡처 ({images.length}/{MAX_PHOTOS})
+      </button>
+      <button onClick={clearAll}>🗑 전체 삭제</button>
+
       <canvas ref={canvasRef} style={{ display: "none" }} />
-      {image && <img src={image} alt="Captured" />}
+
+      <div className={styles.capturedImages}>
+        {images.map((src, index) => (
+          <img key={index} src={src} alt={`Captured ${index + 1}`} />
+        ))}
+      </div>
     </>
   );
 };
