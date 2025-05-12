@@ -38,6 +38,9 @@ const WebCam = () => {
     canvas.width = displayWidth;
     canvas.height = displayHeight;
 
+    ctx.save();
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1);
     ctx.drawImage(
       video,
       sx,
@@ -49,6 +52,8 @@ const WebCam = () => {
       canvas.width,
       canvas.height
     );
+    ctx.restore();
+
     const dataURL = canvas.toDataURL("image/png");
     setImage(dataURL);
   };
@@ -65,7 +70,7 @@ const WebCam = () => {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            aspectRatio: "3/4", // 원하는 비율
+            aspectRatio: "3/4",
           }}
         />
       </div>
