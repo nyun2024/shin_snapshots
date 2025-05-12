@@ -1,7 +1,8 @@
+@use "../../assets/styles/mixin.scss" as *;
+@use "../../assets/styles/variables" as *;
+
 .title {
-  font-family: "Poppins";
-  font-weight: 600;
-  font-size: 40px;
+  @include font-style($font-title, 40px, 600, #222);
   line-height: 46px;
   letter-spacing: -0.5px;
   text-align: center;
