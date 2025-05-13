@@ -1,7 +1,7 @@
-import FrameTypeButton from "@components/button/FrameTypeButton";
-import WebCam from "../Snapshot/WebCam";
-import styles from "./Home.module.scss";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import FrameTypeButton from "@components/button/FrameTypeButton";
+import styles from "./Home.module.scss";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -9,6 +9,13 @@ const Home = () => {
   const goToWebCam = (type) => {
     navigate(`/webcam/${type}`);
   };
+
+  useEffect(() => {
+    // WebCam 이미지 초기화
+    localStorage.removeItem("capturedImages");
+    localStorage.setItem("resultSnapshot", false);
+  }, []);
+
   return (
     <>
       <div className={styles.title}>

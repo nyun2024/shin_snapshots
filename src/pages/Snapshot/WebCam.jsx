@@ -1,23 +1,8 @@
 import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./WebCam.module.scss";
-import { useParams } from "react-router-dom";
-
-// 프레임 이미지 가져오기
-import black1 from "@img/frame/black/black1.png";
-import black2 from "@img/frame/black/black2.png";
-import black3 from "@img/frame/black/black3.png";
-import black4 from "@img/frame/black/black4.png";
-import white1 from "@img/frame/white/white1.png";
-import white2 from "@img/frame/white/white2.png";
-import white3 from "@img/frame/white/white3.png";
-import white4 from "@img/frame/white/white4.png";
-
-// 타입별 프레임 세트
-const frameType = {
-  black: [black1, black2, black3, black4],
-  white: [white1, white2, white3, white4],
-};
+import { frameImages } from "@constants/frameImages.js";
 
 const MAX_PHOTOS = 4;
 const STORAGE_KEY = "capturedImages";
@@ -25,12 +10,15 @@ const STORAGE_KEY = "capturedImages";
 const WebCam = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const { type } = useParams(); // URL에서 type 추출
+  const frames = frameImages[type];
+  const navigate = useNavigate();
+
   const [images, setImages] = useState([]);
   const [countdown, setCountdown] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
-  const { type } = useParams();
 
-  // localStorage에서 복원
+  // 로컬 스토리지 복원
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -45,7 +33,24 @@ const WebCam = () => {
     }
   }, []);
 
-  // 카운트다운 후 자동 캡처
+  //4장 활영 끝나면 0.5초 뒤에 이동
+  useEffect(() => {
+    const resultSnapshot = localStorage.getItem("resultSnapshot");
+
+    if (images.length >= MAX_PHOTOS && resultSnapshot === "false") {
+      const timer = setTimeout(() => {
+        navigate(`/edit/${type}`);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+
+    // edit에서 뒤로가기 막음
+    if (resultSnapshot === "true") {
+      navigate("/edit");
+    }
+  }, [images, navigate]);
+
   const startCountdown = () => {
     if (images.length >= MAX_PHOTOS || isCounting) return;
 
@@ -66,7 +71,6 @@ const WebCam = () => {
     }, 1000);
   };
 
-  // 실제 캡처
   const capture = () => {
     const video = webcamRef.current.video;
     const canvas = canvasRef.current;
@@ -113,7 +117,7 @@ const WebCam = () => {
     );
     ctx.restore();
 
-    const dataURL = canvas.toDataURL("image/jpeg", 0.8);
+    const dataURL = canvas.toDataURL("image/jpeg");
     const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
     setImages(newImages);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newImages));
@@ -127,8 +131,8 @@ const WebCam = () => {
   return (
     <>
       <div className={styles.webCamFrame}>
-        {images.length >= MAX_PHOTOS || !frameType[type] ? null : (
-          <img src={frameType[type][images.length]} alt="Frame" />
+        {images.length < MAX_PHOTOS && frames?.[images.length] && (
+          <img src={frames[images.length]} alt={`Frame ${images.length}`} />
         )}
 
         <Webcam
@@ -160,7 +164,7 @@ const WebCam = () => {
 
       <canvas ref={canvasRef} style={{ display: "none" }} />
 
-      <div className={styles.capturedImages}>
+      <div className={styles.capturedImages} style={{ display: "none" }}>
         {images.map((src, index) => (
           <img key={index} src={src} alt={`Captured ${index + 1}`} />
         ))}
