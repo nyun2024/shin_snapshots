@@ -1,13 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { resultFrame } from "@constants/frameImages.js";
 import styles from "./EditSnapshot.module.scss";
+import classNames from "classnames";
+import html2canvas from "html2canvas";
 
 const EditSnapshot = () => {
   const [images, setImages] = useState([]);
+  const [imgFilter, setImgFilter] = useState("");
+  const [congratulationText, setCongratulationText] = useState(
+    `Happy Birthday\nAsakura Shin`
+  );
+
   const navigate = useNavigate();
-  const { type } = useParams(); // URL에서 type 추출
+  const { type } = useParams();
   const frame = resultFrame[type];
+
+  const resultRef = useRef(null); // 캡처 대상 ref
+
+  const filter = [
+    "no filter",
+    "gingham",
+    "moon",
+    "lark",
+    "reyes",
+    "juno",
+    "slumber",
+    "willow",
+    "blurBright",
+    "softGlow",
+    "rosy",
+  ];
 
   useEffect(() => {
     const stored = localStorage.getItem("capturedImages");
@@ -29,22 +52,68 @@ const EditSnapshot = () => {
     navigate("/");
   };
 
+  const handleFilter = (filterName) => {
+    setImgFilter(filterName === "no filter" ? "" : filterName);
+  };
+
+  const handleCongText = (e) => {
+    setCongratulationText(e.target.value);
+  };
+
+  const downloadImage = async () => {
+    if (!resultRef.current) return;
+
+    const canvas = await html2canvas(resultRef.current);
+    const dataUrl = canvas.toDataURL("image/png");
+
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.download = "snapshot.png";
+    link.click();
+  };
+
   return (
     <div>
-      <h2>꾸미기</h2>
-      <div className={styles.resultFrameWrap}>
+      {filter.map((item) => (
+        <button key={item} type="button" onClick={() => handleFilter(item)}>
+          {item}
+        </button>
+      ))}
+
+      <div>
+        <label>축하 멘트를 적어주세요!</label>
+        <textarea onChange={handleCongText} />
+      </div>
+
+      <div className={styles.resultFrameWrap} ref={resultRef}>
         <img src={frame} className={styles.resultFrame} alt="Frame" />
         <div className={styles.capturedImgWrap}>
           {images.map((src, index) => (
             <img
               key={index}
-              className={styles.capturedImg}
+              className={classNames(
+                styles.capturedImg,
+                styles[`filter-${imgFilter}`]
+              )}
               src={src}
               alt={`Captured ${index + 1}`}
             />
           ))}
         </div>
+        <div className={styles.congratulationText}>
+          {congratulationText.split("\n").map((line, idx) => (
+            <span key={idx}>
+              {line}
+              <br />
+            </span>
+          ))}
+        </div>
       </div>
+
+      <button type="button" onClick={downloadImage}>
+        이미지 다운로드
+      </button>
+
       <button type="button" onClick={goHome}>
         다시 찍기
       </button>

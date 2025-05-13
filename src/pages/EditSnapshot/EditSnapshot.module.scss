@@ -1,9 +1,13 @@
+@use "../../assets/styles/mixin.scss" as *;
+@use "../../assets/styles/variables" as *;
+
 .resultFrameWrap {
   width: 591px;
   height: 1704px;
   position: relative;
   .resultFrame {
     position: absolute;
+    z-index: 100;
   }
   .capturedImgWrap {
     width: 591px;
@@ -19,4 +23,66 @@
       height: 318px;
     }
   }
+  .congratulationText {
+    width: 100%;
+    height: 293px;
+    @include font-style($font-hand, 55px, 400, #fff);
+    position: absolute;
+    z-index: 101;
+    transform: translateX(-50%);
+    left: 50%;
+    bottom: 0;
+    padding: 20px 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    word-break: keep-all;
+    white-space: pre-line;
+    text-align: center;
+  }
+}
+
+/* filter */
+.filter-clarendon {
+  filter: contrast(1.2) saturate(1.35);
+}
+
+.filter-gingham {
+  filter: contrast(0.9) brightness(1.05) sepia(0.04);
+}
+
+.filter-moon {
+  filter: grayscale(1) contrast(1.1) brightness(1.1);
+}
+
+.filter-lark {
+  filter: contrast(1.1) saturate(1.2) brightness(1.05);
+}
+
+.filter-reyes {
+  filter: sepia(0.22) brightness(1.1) contrast(0.85);
+}
+
+.filter-juno {
+  filter: hue-rotate(-10deg) contrast(1.1) saturate(1.3);
+}
+
+.filter-slumber {
+  filter: saturate(0.66) brightness(1.05);
+}
+
+.filter-willow {
+  filter: grayscale(0.5) sepia(0.2) brightness(1.05);
+}
+.filter-blurBright {
+  filter: brightness(1.1) saturate(1.2) contrast(0.95) blur(0.4px);
+}
+.filter-softGlow {
+  filter: brightness(1.15) contrast(0.9) blur(0.4px);
+}
+
+.filter-rosy {
+  filter: brightness(1.1) saturate(1.4) hue-rotate(-10deg) contrast(0.95);
 }
