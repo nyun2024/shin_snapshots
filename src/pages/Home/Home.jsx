@@ -1,3 +1,4 @@
+import FrameTypeButton from "@components/button/FrameTypeButton";
 import WebCam from "../Snapshot/WebCam";
 import styles from "./Home.module.scss";
 
@@ -11,7 +12,11 @@ const Home = () => {
         <br />
         <strong>Asakura Shin</strong>
       </div>
-      <WebCam />
+      <div className={styles.frameButtonWrap}>
+        <FrameTypeButton type="black" />
+        <FrameTypeButton type="white" />
+      </div>
+      {/* <WebCam /> */}
     </>
   );
 };
