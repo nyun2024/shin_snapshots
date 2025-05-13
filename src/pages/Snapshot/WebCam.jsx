@@ -46,9 +46,9 @@ const WebCam = () => {
     }
 
     // edit에서 뒤로가기 막음
-    if (resultSnapshot === "true") {
-      navigate("/edit");
-    }
+    // if (resultSnapshot === "true") {
+    //   navigate(`/edit/${type}`);
+    // }
   }, [images, navigate]);
 
   const startCountdown = () => {
