@@ -1,11 +1,23 @@
 import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import styles from "./WebCam.module.scss";
+import { useParams } from "react-router-dom";
+
+// 프레임 이미지 가져오기
 import black1 from "@img/frame/black/black1.png";
 import black2 from "@img/frame/black/black2.png";
 import black3 from "@img/frame/black/black3.png";
 import black4 from "@img/frame/black/black4.png";
-const blackFrames = [black1, black2, black3, black4];
+import white1 from "@img/frame/white/white1.png";
+import white2 from "@img/frame/white/white2.png";
+import white3 from "@img/frame/white/white3.png";
+import white4 from "@img/frame/white/white4.png";
+
+// 타입별 프레임 세트
+const frameType = {
+  black: [black1, black2, black3, black4],
+  white: [white1, white2, white3, white4],
+};
 
 const MAX_PHOTOS = 4;
 const STORAGE_KEY = "capturedImages";
@@ -14,8 +26,9 @@ const WebCam = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const [images, setImages] = useState([]);
-  const [countdown, setCountdown] = useState(0); // 카운트다운 표시용
-  const [isCounting, setIsCounting] = useState(false); // 버튼 비활성화 상태
+  const [countdown, setCountdown] = useState(0);
+  const [isCounting, setIsCounting] = useState(false);
+  const { type } = useParams();
 
   // localStorage에서 복원
   useEffect(() => {
@@ -32,7 +45,7 @@ const WebCam = () => {
     }
   }, []);
 
-  // 카운트다운 시작 후 자동 캡처
+  // 카운트다운 후 자동 캡처
   const startCountdown = () => {
     if (images.length >= MAX_PHOTOS || isCounting) return;
 
@@ -53,7 +66,7 @@ const WebCam = () => {
     }, 1000);
   };
 
-  // 실제 캡처 함수
+  // 실제 캡처
   const capture = () => {
     const video = webcamRef.current.video;
     const canvas = canvasRef.current;
@@ -85,7 +98,7 @@ const WebCam = () => {
     canvas.height = displayHeight;
 
     ctx.save();
-    ctx.translate(canvas.width, 0);
+    ctx.translate(canvas.width, 0); // 좌우 반전
     ctx.scale(-1, 1);
     ctx.drawImage(
       video,
@@ -114,9 +127,10 @@ const WebCam = () => {
   return (
     <>
       <div className={styles.webCamFrame}>
-        {images.length >= MAX_PHOTOS ? null : (
-          <img src={blackFrames[images.length]} alt="Frame" />
+        {images.length >= MAX_PHOTOS || !frameType[type] ? null : (
+          <img src={frameType[type][images.length]} alt="Frame" />
         )}
+
         <Webcam
           ref={webcamRef}
           mirrored={true}
@@ -128,6 +142,7 @@ const WebCam = () => {
             aspectRatio: "3/4",
           }}
         />
+
         {countdown > 0 && (
           <div className={styles.countdown}>
             <span>{countdown}</span>

@@ -8,7 +8,7 @@ const imgs = {
   white,
 };
 
-const FrameTypeButton = ({ type }) => {
+const FrameTypeButton = ({ type, onClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const imgSrc = imgs[type];
 
@@ -42,7 +42,9 @@ const FrameTypeButton = ({ type }) => {
           </button>
         </div>
         <div>{type}</div>
-        <button type="button">선택</button>
+        <button type="button" onClick={onClick}>
+          선택
+        </button>
       </div>
 
       {isOpen && (
