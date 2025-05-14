@@ -93,7 +93,7 @@ const EditSnapshot = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       {filter.map((item) => (
         <button key={item} type="button" onClick={() => handleFilter(item)}>
           {item}
