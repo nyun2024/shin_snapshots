@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { resultFrame } from "@constants/frameImages.js";
 import styles from "./EditSnapshot.module.scss";
+import domtoimage from "dom-to-image-more";
 
 const EditSnapshot = () => {
   const [images, setImages] = useState([]);
@@ -9,6 +10,7 @@ const EditSnapshot = () => {
   const [congratulationText, setCongratulationText] = useState(
     "Happy Birthday\nAsakura Shin"
   );
+  const resultRef = useRef();
 
   const navigate = useNavigate();
   const { type } = useParams();
@@ -90,6 +92,22 @@ const EditSnapshot = () => {
     navigate("/save/" + type);
   };
 
+  const downloadImage = async () => {
+    if (!resultRef.current) return;
+
+    try {
+      const blob = await domtoimage.toBlob(resultRef.current);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "snapshot.png";
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("이미지 저장 실패", err);
+    }
+  };
+
   return (
     <div className={styles.container}>
       {filter.map((item) => (
@@ -103,7 +121,7 @@ const EditSnapshot = () => {
         <textarea value={congratulationText} onChange={handleCongText} />
       </div>
 
-      <div className={styles.resultFrameWrap}>
+      <div className={styles.resultFrameWrap}  ref={resultRef}>
         <img src={frame} className={styles.resultFrame} alt="Frame" />
         <div className={styles.capturedImgWrap}>
           {images.map((src, index) => (
@@ -127,6 +145,7 @@ const EditSnapshot = () => {
       </div>
 
       <button onClick={saveFilteredImages}>수정 완료</button>
+      <button onClick={downloadImage}>다운로드</button>
     </div>
   );
 };
