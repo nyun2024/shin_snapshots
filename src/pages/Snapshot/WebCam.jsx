@@ -117,6 +117,8 @@ const WebCam = () => {
     const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
     setImages(newImages);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newImages));
+    console.log("저장된 이미지", newImages);
+    console.log("저장된 필터 이미지", dataURL);
   };
 
   const clearAll = () => {
