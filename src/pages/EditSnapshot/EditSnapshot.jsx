@@ -32,7 +32,6 @@ const EditSnapshot = () => {
   };
 
   const saveFilteredImages = () => {
-    // 필터 재적용 없이 그대로 저장
     localStorage.setItem("filteredImages", JSON.stringify(images));
     localStorage.setItem("congratulationText", congratulationText);
     navigate("/save/" + type);

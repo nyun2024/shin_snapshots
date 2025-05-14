@@ -5,7 +5,7 @@ import styles from "./WebCam.module.scss";
 import { frameImages } from "@constants/frameImages.js";
 
 const MAX_PHOTOS = 4;
-const STORAGE_KEY = "capturedImages";
+const STORAGE_KEY = "filteredImages";
 
 const filterMap = {
   "no filter": "none",
@@ -49,12 +49,10 @@ const WebCam = () => {
 
   useEffect(() => {
     const resultSnapshot = localStorage.getItem("resultSnapshot");
-
     if (images.length >= MAX_PHOTOS && resultSnapshot === "false") {
       const timer = setTimeout(() => {
         navigate(`/edit/${type}`);
       }, 500);
-
       return () => clearTimeout(timer);
     }
   }, [images, navigate]);
@@ -109,9 +107,9 @@ const WebCam = () => {
     canvas.height = displayHeight;
 
     ctx.save();
-    ctx.translate(canvas.width, 0); // 좌우 반전
+    ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
-    ctx.filter = filterMap[selectedFilter] || "none"; // 필터 적용
+    ctx.filter = filterMap[selectedFilter] || "none";
     ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
     ctx.restore();
 
@@ -142,7 +140,7 @@ const WebCam = () => {
             height: "100%",
             objectFit: "cover",
             aspectRatio: "3/4",
-            filter: filterMap[selectedFilter], // 필터 실시간 적용
+            filter: filterMap[selectedFilter], // 실시간 필터 미리보기
           }}
         />
 
@@ -166,10 +164,7 @@ const WebCam = () => {
         ))}
       </div>
 
-      <button
-        onClick={startCountdown}
-        disabled={isCounting || images.length >= MAX_PHOTOS}
-      >
+      <button onClick={startCountdown} disabled={isCounting || images.length >= MAX_PHOTOS}>
         📸 캡처 ({images.length}/{MAX_PHOTOS})
       </button>
       <button onClick={clearAll}>🗑 전체 삭제</button>
