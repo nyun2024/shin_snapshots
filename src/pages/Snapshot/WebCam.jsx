@@ -32,7 +32,7 @@ const WebCam = () => {
   const [images, setImages] = useState([]);
   const [countdown, setCountdown] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState("no filter"); // 선택된 필터
+  const [selectedFilter, setSelectedFilter] = useState("no filter");
 
   // 로컬 스토리지 복원
   useEffect(() => {
@@ -127,9 +127,10 @@ const WebCam = () => {
     );
     ctx.restore();
 
-    // 선택된 필터 적용
+    // 필터 적용
     ctx.filter = filters[selectedFilter];
 
+    // 필터 적용된 이미지를 캡처
     const dataURL = canvas.toDataURL("image/jpeg");
     const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
     setImages(newImages);
@@ -148,7 +149,6 @@ const WebCam = () => {
           <img src={frames[images.length]} alt={`Frame ${images.length}`} />
         )}
 
-        {/* 비디오 스트림에 필터 적용 */}
         <Webcam
           ref={webcamRef}
           mirrored={true}
