@@ -1,10 +1,14 @@
-import { useRef, useState, useEffect } from "react"; 
+// WebCam.jsx
+import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./WebCam.module.scss";
 import { frameImages } from "@constants/frameImages.js";
 
-// 필터 종류
+const MAX_PHOTOS = 4;
+const STORAGE_KEY = "capturedImages";
+
+// 필터 정의
 const filters = {
   "no filter": "none",
   gingham: "contrast(0.9) brightness(1.05) sepia(0.04)",
@@ -16,12 +20,8 @@ const filters = {
   willow: "grayscale(0.5) sepia(0.2) brightness(1.05)",
   blurBright: "brightness(1.1) saturate(1.2) contrast(0.95) blur(0.4px)",
   softGlow: "brightness(1.15) contrast(0.9) blur(0.4px)",
-  rosy: "brightness(1.1) saturate(1.4) hue-rotate(-10deg) contrast(0.95)"
+  rosy: "brightness(1.1) saturate(1.4) hue-rotate(-10deg) contrast(0.95)",
 };
-
-const MAX_PHOTOS = 4;
-const STORAGE_KEY = "capturedImages";
-
 
 const WebCam = () => {
   const webcamRef = useRef(null);
@@ -35,7 +35,6 @@ const WebCam = () => {
   const [isCounting, setIsCounting] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("no filter");
 
-  // 로컬 스토리지 복원
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -52,12 +51,10 @@ const WebCam = () => {
 
   useEffect(() => {
     const resultSnapshot = localStorage.getItem("resultSnapshot");
-
     if (images.length >= MAX_PHOTOS && resultSnapshot === "false") {
       const timer = setTimeout(() => {
         navigate(`/edit/${type}`);
       }, 500);
-
       return () => clearTimeout(timer);
     }
   }, [images, navigate]);
@@ -115,6 +112,7 @@ const WebCam = () => {
     ctx.save();
     ctx.translate(canvas.width, 0); // 좌우 반전
     ctx.scale(-1, 1);
+    ctx.filter = filters[selectedFilter]; // 🔥 필터 적용
     ctx.drawImage(
       video,
       sx,
@@ -128,10 +126,6 @@ const WebCam = () => {
     );
     ctx.restore();
 
-    // 필터 적용
-    ctx.filter = filters[selectedFilter];
-
-    // 필터 적용된 이미지를 캡처
     const dataURL = canvas.toDataURL("image/jpeg");
     const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
     setImages(newImages);
@@ -159,7 +153,7 @@ const WebCam = () => {
             height: "100%",
             objectFit: "cover",
             aspectRatio: "3/4",
-            filter: filters[selectedFilter], // 실시간 필터 적용
+            filter: filters[selectedFilter], // 실시간 프리뷰에도 필터 적용
           }}
         />
 
@@ -170,27 +164,27 @@ const WebCam = () => {
         )}
       </div>
 
-      <div className={styles.filterSelector}>
-        {Object.keys(filters).map((filter) => (
-          <button
-            key={filter}
-            onClick={() => setSelectedFilter(filter)}
-            style={{
-              backgroundColor: selectedFilter === filter ? "lightgray" : "white",
-            }}
-          >
-            {filter}
-          </button>
-        ))}
-      </div>
+      <div className={styles.controls}>
+        <select
+          value={selectedFilter}
+          onChange={(e) => setSelectedFilter(e.target.value)}
+        >
+          {Object.keys(filters).map((key) => (
+            <option key={key} value={key}>
+              {key}
+            </option>
+          ))}
+        </select>
 
-      <button
-        onClick={startCountdown}
-        disabled={isCounting || images.length >= MAX_PHOTOS}
-      >
-        📸 캡처 ({images.length}/{MAX_PHOTOS})
-      </button>
-      <button onClick={clearAll}>🗑 전체 삭제</button>
+        <button
+          onClick={startCountdown}
+          disabled={isCounting || images.length >= MAX_PHOTOS}
+        >
+          📸 캡처 ({images.length}/{MAX_PHOTOS})
+        </button>
+
+        <button onClick={clearAll}>🗑 전체 삭제</button>
+      </div>
 
       <canvas ref={canvasRef} style={{ display: "none" }} />
 
