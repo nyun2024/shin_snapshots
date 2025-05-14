@@ -14,7 +14,7 @@ const EditSnapshot = () => {
   const frame = resultFrame[type];
 
   useEffect(() => {
-    const stored = localStorage.getItem("capturedImages");
+    const stored = localStorage.getItem("filteredImages");
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
