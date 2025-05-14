@@ -6,32 +6,16 @@ import html2canvas from "html2canvas";
 
 const EditSnapshot = () => {
   const [images, setImages] = useState([]);
-  const [filteredImages, setFilteredImages] = useState([]);
-  const [imgFilter, setImgFilter] = useState("");
-  const [congratulationText, setCongratulationText] = useState(
-    "Happy Birthday\nAsakura Shin"
-  );
+  const [imgFilter, setImgFilter] = useState("no filter");
+  const [congratulationText, setCongratulationText] = useState("Happy Birthday\nAsakura Shin");
   const resultRef = useRef();
 
   const navigate = useNavigate();
   const { type } = useParams();
   const frame = resultFrame[type];
 
-  const filter = [
-    "no filter",
-    "gingham",
-    "moon",
-    "lark",
-    "reyes",
-    "juno",
-    "slumber",
-    "willow",
-    "blurBright",
-    "softGlow",
-    "rosy",
-  ];
-
   const filterMap = {
+    "no filter": "none",
     gingham: "contrast(0.9) brightness(1.05) sepia(0.04)",
     moon: "grayscale(1) contrast(1.1) brightness(1.1)",
     lark: "contrast(1.1) saturate(1.2) brightness(1.05)",
@@ -58,46 +42,9 @@ const EditSnapshot = () => {
     }
   }, []);
 
-  // 필터 적용된 이미지 생성
-  useEffect(() => {
-    if (images.length === 0) return;
-
-    const applyFilterToImages = async () => {
-      const newImages = await Promise.all(
-        images.map((src) => {
-          return new Promise((resolve) => {
-            const img = new Image();
-            img.crossOrigin = "anonymous";
-            img.src = src;
-
-            img.onload = () => {
-              const canvas = document.createElement("canvas");
-              canvas.width = img.width;
-              canvas.height = img.height;
-              const ctx = canvas.getContext("2d");
-              ctx.filter =
-                imgFilter && filterMap[imgFilter] ? filterMap[imgFilter] : "none";
-              ctx.drawImage(img, 0, 0);
-              const dataURL = canvas.toDataURL("image/png");
-              resolve(dataURL);
-            };
-
-            img.onerror = () => {
-              console.warn("이미지 로딩 실패:", src);
-              resolve(src); // fallback
-            };
-          });
-        })
-      );
-
-      setFilteredImages(newImages);
-    };
-
-    applyFilterToImages();
-  }, [images, imgFilter]);
-
   const handleFilter = (filterName) => {
-    setImgFilter(filterName === "no filter" ? "" : filterName);
+    // 필터 상태 변경
+    setImgFilter(filterName);
   };
 
   const handleCongText = (e) => {
@@ -105,7 +52,26 @@ const EditSnapshot = () => {
   };
 
   const saveFilteredImages = async () => {
-    localStorage.setItem("filteredImages", JSON.stringify(filteredImages));
+    const filteredDataUrls = await Promise.all(
+      images.map((src) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.src = src;
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.filter = filterMap[imgFilter] || "none";
+            ctx.drawImage(img, 0, 0);
+            resolve(canvas.toDataURL("image/png"));
+          };
+        });
+      })
+    );
+
+    localStorage.setItem("filteredImages", JSON.stringify(filteredDataUrls));
     localStorage.setItem("congratulationText", congratulationText);
     navigate("/save/" + type);
   };
@@ -133,13 +99,11 @@ const EditSnapshot = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.filterList}>
-        {filter.map((item) => (
-          <button key={item} onClick={() => handleFilter(item)}>
-            {item}
-          </button>
-        ))}
-      </div>
+      {Object.keys(filterMap).map((item) => (
+        <button key={item} onClick={() => handleFilter(item)}>
+          {item}
+        </button>
+      ))}
 
       <div>
         <label>축하 멘트를 적어주세요!</label>
@@ -149,11 +113,12 @@ const EditSnapshot = () => {
       <div className={styles.resultFrameWrap} ref={resultRef}>
         <img src={frame} className={styles.resultFrame} alt="Frame" />
         <div className={styles.capturedImgWrap}>
-          {filteredImages.map((src, index) => (
+          {images.map((src, index) => (
             <img
               key={index}
               src={src}
               className={styles.capturedImg}
+              style={{ filter: filterMap[imgFilter] }}
               alt={`Captured ${index + 1}`}
             />
           ))}

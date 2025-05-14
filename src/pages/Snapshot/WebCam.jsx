@@ -1,8 +1,23 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react"; 
 import Webcam from "react-webcam";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./WebCam.module.scss";
 import { frameImages } from "@constants/frameImages.js";
+
+// 필터 종류
+const filters = {
+  "no filter": "none",
+  gingham: "contrast(0.9) brightness(1.05) sepia(0.04)",
+  moon: "grayscale(1) contrast(1.1) brightness(1.1)",
+  lark: "contrast(1.1) saturate(1.2) brightness(1.05)",
+  reyes: "sepia(0.22) brightness(1.1) contrast(0.85)",
+  juno: "hue-rotate(-10deg) contrast(1.1) saturate(1.3)",
+  slumber: "saturate(0.66) brightness(1.05)",
+  willow: "grayscale(0.5) sepia(0.2) brightness(1.05)",
+  blurBright: "brightness(1.1) saturate(1.2) contrast(0.95) blur(0.4px)",
+  softGlow: "brightness(1.15) contrast(0.9) blur(0.4px)",
+  rosy: "brightness(1.1) saturate(1.4) hue-rotate(-10deg) contrast(0.95)"
+};
 
 const MAX_PHOTOS = 4;
 const STORAGE_KEY = "capturedImages";
@@ -10,13 +25,14 @@ const STORAGE_KEY = "capturedImages";
 const WebCam = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
-  const { type } = useParams(); // URL에서 type 추출
+  const { type } = useParams();
   const frames = frameImages[type];
   const navigate = useNavigate();
 
   const [images, setImages] = useState([]);
   const [countdown, setCountdown] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState("no filter"); // 선택된 필터
 
   // 로컬 스토리지 복원
   useEffect(() => {
@@ -33,7 +49,6 @@ const WebCam = () => {
     }
   }, []);
 
-  //4장 활영 끝나면 0.5초 뒤에 이동
   useEffect(() => {
     const resultSnapshot = localStorage.getItem("resultSnapshot");
 
@@ -44,11 +59,6 @@ const WebCam = () => {
 
       return () => clearTimeout(timer);
     }
-
-    // edit에서 뒤로가기 막음
-    // if (resultSnapshot === "true") {
-    //   navigate(`/edit/${type}`);
-    // }
   }, [images, navigate]);
 
   const startCountdown = () => {
@@ -117,6 +127,9 @@ const WebCam = () => {
     );
     ctx.restore();
 
+    // 선택된 필터 적용
+    ctx.filter = filters[selectedFilter];
+
     const dataURL = canvas.toDataURL("image/jpeg");
     const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
     setImages(newImages);
@@ -135,6 +148,7 @@ const WebCam = () => {
           <img src={frames[images.length]} alt={`Frame ${images.length}`} />
         )}
 
+        {/* 비디오 스트림에 필터 적용 */}
         <Webcam
           ref={webcamRef}
           mirrored={true}
@@ -144,6 +158,7 @@ const WebCam = () => {
             height: "100%",
             objectFit: "cover",
             aspectRatio: "3/4",
+            filter: filters[selectedFilter], // 실시간 필터 적용
           }}
         />
 
@@ -152,6 +167,20 @@ const WebCam = () => {
             <span>{countdown}</span>
           </div>
         )}
+      </div>
+
+      <div className={styles.filterSelector}>
+        {Object.keys(filters).map((filter) => (
+          <button
+            key={filter}
+            onClick={() => setSelectedFilter(filter)}
+            style={{
+              backgroundColor: selectedFilter === filter ? "lightgray" : "white",
+            }}
+          >
+            {filter}
+          </button>
+        ))}
       </div>
 
       <button
