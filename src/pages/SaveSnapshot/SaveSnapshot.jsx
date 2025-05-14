@@ -22,7 +22,12 @@ const SaveSnapshot = () => {
   const downloadImage = async () => {
     if (!resultRef.current) return;
 
-    const canvas = await html2canvas(resultRef.current);
+    const canvas = await html2canvas(resultRef.current, {
+      useCORS: true,
+      backgroundColor: null, // 투명 배경 방지
+      scale: 2, // 해상도 향상
+    });
+
     const dataUrl = canvas.toDataURL("image/png");
 
     const userAgent = navigator.userAgent.toLowerCase();
@@ -33,9 +38,9 @@ const SaveSnapshot = () => {
       const newTab = window.open();
       if (newTab) {
         newTab.document.body.innerHTML = `
-        <p style="text-align: center; font-family: sans-serif;">길게 눌러 이미지를 저장하세요</p>
-        <img src="${dataUrl}" alt="snapshot" style="width: 100%;" />
-      `;
+          <p style="text-align: center; font-family: sans-serif;">길게 눌러 이미지를 저장하세요</p>
+          <img src="${dataUrl}" alt="snapshot" style="width: 100%;" />
+        `;
       } else {
         alert("팝업 차단이 활성화되어 이미지를 열 수 없습니다.");
       }
@@ -57,7 +62,7 @@ const SaveSnapshot = () => {
               key={idx}
               src={src}
               className={styles.capturedImg}
-              alt="Filtered"
+              alt={`Filtered ${idx + 1}`}
             />
           ))}
         </div>

@@ -69,8 +69,7 @@ const EditSnapshot = () => {
       images.map((src) => {
         return new Promise((resolve) => {
           const img = new Image();
-          // 필요 시 crossOrigin 설정 제거
-          // img.crossOrigin = "anonymous";
+          img.crossOrigin = "anonymous";
           img.src = src;
 
           img.onload = () => {
@@ -79,23 +78,23 @@ const EditSnapshot = () => {
             canvas.height = img.height;
             const ctx = canvas.getContext("2d");
 
+            // 필터 적용
             if (imgFilter && filterMap[imgFilter]) {
               ctx.filter = filterMap[imgFilter];
             }
 
             ctx.drawImage(img, 0, 0);
-
-            requestAnimationFrame(() => {
-              resolve(canvas.toDataURL("image/png"));
-            });
+            resolve(canvas.toDataURL("image/png"));
           };
         });
       })
     );
 
+    // 로컬스토리지에 필터가 적용된 이미지 저장
     localStorage.setItem("filteredImages", JSON.stringify(canvasList));
     localStorage.setItem("congratulationText", congratulationText);
-    navigate("/save/" + type);
+
+    navigate("/save/" + type); // Save 페이지로 이동
   };
 
   return (
