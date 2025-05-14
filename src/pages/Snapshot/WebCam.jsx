@@ -22,6 +22,7 @@ const filters = {
 const MAX_PHOTOS = 4;
 const STORAGE_KEY = "capturedImages";
 
+
 const WebCam = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
