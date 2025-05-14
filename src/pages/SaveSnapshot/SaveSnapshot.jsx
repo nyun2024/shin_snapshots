@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import html2canvas from "html2canvas";
 import { resultFrame } from "@constants/frameImages";
 import { useParams } from "react-router-dom";
 import styles from "./SaveSnapshot.module.scss";
+import html2canvas from "html2canvas";
 
 const SaveSnapshot = () => {
   const [images, setImages] = useState([]);
@@ -22,12 +22,7 @@ const SaveSnapshot = () => {
   const downloadImage = async () => {
     if (!resultRef.current) return;
 
-    const canvas = await html2canvas(resultRef.current, {
-      useCORS: true,
-      backgroundColor: null, // 투명 배경 방지
-      scale: 2, // 해상도 향상
-    });
-
+    const canvas = await html2canvas(resultRef.current);
     const dataUrl = canvas.toDataURL("image/png");
 
     const userAgent = navigator.userAgent.toLowerCase();
@@ -38,9 +33,9 @@ const SaveSnapshot = () => {
       const newTab = window.open();
       if (newTab) {
         newTab.document.body.innerHTML = `
-          <p style="text-align: center; font-family: sans-serif;">길게 눌러 이미지를 저장하세요</p>
-          <img src="${dataUrl}" alt="snapshot" style="width: 100%;" />
-        `;
+        <p style="text-align: center; font-family: sans-serif;">길게 눌러 이미지를 저장하세요</p>
+        <img src="${dataUrl}" alt="snapshot" style="width: 100%;" />
+      `;
       } else {
         alert("팝업 차단이 활성화되어 이미지를 열 수 없습니다.");
       }
@@ -57,12 +52,13 @@ const SaveSnapshot = () => {
       <div className={styles.resultFrameWrap} ref={resultRef}>
         <img src={frame} className={styles.resultFrame} alt="Frame" />
         <div className={styles.capturedImgWrap}>
-          {images.map((src, idx) => (
+          {images.map((image, idx) => (
             <img
               key={idx}
-              src={src}
+              src={image.src}
               className={styles.capturedImg}
-              alt={`Filtered ${idx + 1}`}
+              style={{ filter: image.filter }}
+              alt="Filtered"
             />
           ))}
         </div>

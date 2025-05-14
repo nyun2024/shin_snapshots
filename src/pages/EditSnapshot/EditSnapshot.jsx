@@ -64,41 +64,19 @@ const EditSnapshot = () => {
     setCongratulationText(e.target.value);
   };
 
-  const saveFilteredImages = async () => {
-    const canvasList = await Promise.all(
-      images.map((src) => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.crossOrigin = "anonymous"; // CORS 문제 방지
-          img.src = src;
+  const saveFilteredImages = () => {
+    // 이미지 데이터와 필터를 로컬스토리지에 저장
+    const filteredImages = images.map((src) => {
+      return {
+        src,
+        filter: imgFilter ? filterMap[imgFilter] : "",
+      };
+    });
 
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            const ctx = canvas.getContext("2d");
-
-            // 필터 적용
-            if (imgFilter && filterMap[imgFilter]) {
-              ctx.filter = filterMap[imgFilter]; // 필터 적용
-            }
-
-            // 이미지를 그린 후 필터 적용
-            ctx.drawImage(img, 0, 0);
-
-            // 비동기적으로 이미지의 dataURL을 반환
-            const dataUrl = canvas.toDataURL("image/png");
-            resolve(dataUrl);
-          };
-        });
-      })
-    );
-
-    // 로컬스토리지에 필터 적용된 이미지 저장
-    localStorage.setItem("filteredImages", JSON.stringify(canvasList));
+    localStorage.setItem("filteredImages", JSON.stringify(filteredImages));
     localStorage.setItem("congratulationText", congratulationText);
 
-    navigate("/save/" + type); // Save 페이지로 이동
+    navigate("/save/" + type);
   };
 
   return (
