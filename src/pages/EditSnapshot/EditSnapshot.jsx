@@ -2,10 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { resultFrame } from "@constants/frameImages.js";
 import styles from "./EditSnapshot.module.scss";
-import domtoimage from "dom-to-image-more";
+import html2canvas from "html2canvas";
 
 const EditSnapshot = () => {
   const [images, setImages] = useState([]);
+  const [filteredImages, setFilteredImages] = useState([]);
   const [imgFilter, setImgFilter] = useState("");
   const [congratulationText, setCongratulationText] = useState(
     "Happy Birthday\nAsakura Shin"
@@ -44,6 +45,7 @@ const EditSnapshot = () => {
     rosy: "brightness(1.1) saturate(1.4) hue-rotate(-10deg) contrast(0.95)",
   };
 
+  // 이미지 가져오기
   useEffect(() => {
     const stored = localStorage.getItem("capturedImages");
     if (stored) {
@@ -58,6 +60,36 @@ const EditSnapshot = () => {
     }
   }, []);
 
+  // 필터 변경 시 canvas로 적용해서 렌더할 이미지 갱신
+  useEffect(() => {
+    if (images.length === 0) return;
+
+    const applyFilterToImages = async () => {
+      const newImages = await Promise.all(
+        images.map((src) => {
+          return new Promise((resolve) => {
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.src = src;
+            img.onload = () => {
+              const canvas = document.createElement("canvas");
+              canvas.width = img.width;
+              canvas.height = img.height;
+              const ctx = canvas.getContext("2d");
+              ctx.filter =
+                imgFilter && filterMap[imgFilter] ? filterMap[imgFilter] : "none";
+              ctx.drawImage(img, 0, 0);
+              resolve(canvas.toDataURL("image/png"));
+            };
+          });
+        })
+      );
+      setFilteredImages(newImages);
+    };
+
+    applyFilterToImages();
+  }, [images, imgFilter]);
+
   const handleFilter = (filterName) => {
     setImgFilter(filterName === "no filter" ? "" : filterName);
   };
@@ -67,27 +99,7 @@ const EditSnapshot = () => {
   };
 
   const saveFilteredImages = async () => {
-    const filteredDataUrls = await Promise.all(
-      images.map((src) => {
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.crossOrigin = "anonymous";
-          img.src = src;
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            const ctx = canvas.getContext("2d");
-            ctx.filter =
-              imgFilter && filterMap[imgFilter] ? filterMap[imgFilter] : "none";
-            ctx.drawImage(img, 0, 0);
-            resolve(canvas.toDataURL("image/png"));
-          };
-        });
-      })
-    );
-
-    localStorage.setItem("filteredImages", JSON.stringify(filteredDataUrls));
+    localStorage.setItem("filteredImages", JSON.stringify(filteredImages));
     localStorage.setItem("congratulationText", congratulationText);
     navigate("/save/" + type);
   };
@@ -96,13 +108,15 @@ const EditSnapshot = () => {
     if (!resultRef.current) return;
 
     try {
-      const blob = await domtoimage.toBlob(resultRef.current);
-      const url = URL.createObjectURL(blob);
+      const canvas = await html2canvas(resultRef.current, {
+        useCORS: true,
+        allowTaint: false,
+      });
+      const dataUrl = canvas.toDataURL("image/png");
       const a = document.createElement("a");
-      a.href = url;
+      a.href = dataUrl;
       a.download = "snapshot.png";
       a.click();
-      URL.revokeObjectURL(url);
     } catch (err) {
       console.error("이미지 저장 실패", err);
     }
@@ -121,15 +135,14 @@ const EditSnapshot = () => {
         <textarea value={congratulationText} onChange={handleCongText} />
       </div>
 
-      <div className={styles.resultFrameWrap}  ref={resultRef}>
+      <div className={styles.resultFrameWrap} ref={resultRef}>
         <img src={frame} className={styles.resultFrame} alt="Frame" />
         <div className={styles.capturedImgWrap}>
-          {images.map((src, index) => (
+          {filteredImages.map((src, index) => (
             <img
               key={index}
               src={src}
               className={styles.capturedImg}
-              style={{ filter: imgFilter && filterMap[imgFilter] }}
               alt={`Captured ${index + 1}`}
             />
           ))}
