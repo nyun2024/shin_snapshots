@@ -67,24 +67,21 @@ const EditSnapshot = () => {
     const dataUrl = canvas.toDataURL("image/png");
 
     const userAgent = navigator.userAgent.toLowerCase();
-    const isMobileChrome =
-      /android/.test(userAgent) &&
-      /chrome/.test(userAgent) &&
-      !/edge|opr|samsungbrowser/.test(userAgent);
+    const isIOS = /iphone|ipad|ipod/.test(userAgent);
 
-    if (isMobileChrome) {
-      // 모바일 크롬에서는 새 탭에서 이미지 열기
+    if (isIOS) {
+      // iOS: 새 탭에서 이미지 열기
       const newTab = window.open();
       if (newTab) {
         newTab.document.body.innerHTML = `
-        <p style="text-align: center; font-family: sans-serif;">길게 눌러 이미지를 저장하세요</p>
-        <img src="${dataUrl}" alt="snapshot" style="width: 100%;" />
+        <p style="text-align:center; font-family:sans-serif;">길게 눌러 이미지를 저장하세요</p>
+        <img src="${dataUrl}" alt="snapshot" style="width:100%;" />
       `;
       } else {
         alert("팝업 차단이 활성화되어 이미지를 열 수 없습니다.");
       }
     } else {
-      // 일반 브라우저에서는 다운로드 시도
+      // 그 외 환경: 다운로드
       const link = document.createElement("a");
       link.href = dataUrl;
       link.download = "snapshot.png";
