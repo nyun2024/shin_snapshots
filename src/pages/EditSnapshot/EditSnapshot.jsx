@@ -32,7 +32,6 @@ const EditSnapshot = () => {
   ];
 
   const filterMap = {
-    clarendon: "contrast(1.2) saturate(1.35)",
     gingham: "contrast(0.9) brightness(1.05) sepia(0.04)",
     moon: "grayscale(1) contrast(1.1) brightness(1.1)",
     lark: "contrast(1.1) saturate(1.2) brightness(1.05)",
@@ -45,7 +44,6 @@ const EditSnapshot = () => {
     rosy: "brightness(1.1) saturate(1.4) hue-rotate(-10deg) contrast(0.95)",
   };
 
-  // 이미지 가져오기
   useEffect(() => {
     const stored = localStorage.getItem("capturedImages");
     if (stored) {
@@ -60,7 +58,7 @@ const EditSnapshot = () => {
     }
   }, []);
 
-  // 필터 변경 시 canvas로 적용해서 렌더할 이미지 갱신
+  // 필터 적용된 이미지 생성
   useEffect(() => {
     if (images.length === 0) return;
 
@@ -71,6 +69,7 @@ const EditSnapshot = () => {
             const img = new Image();
             img.crossOrigin = "anonymous";
             img.src = src;
+
             img.onload = () => {
               const canvas = document.createElement("canvas");
               canvas.width = img.width;
@@ -79,11 +78,18 @@ const EditSnapshot = () => {
               ctx.filter =
                 imgFilter && filterMap[imgFilter] ? filterMap[imgFilter] : "none";
               ctx.drawImage(img, 0, 0);
-              resolve(canvas.toDataURL("image/png"));
+              const dataURL = canvas.toDataURL("image/png");
+              resolve(dataURL);
+            };
+
+            img.onerror = () => {
+              console.warn("이미지 로딩 실패:", src);
+              resolve(src); // fallback
             };
           });
         })
       );
+
       setFilteredImages(newImages);
     };
 
@@ -110,11 +116,14 @@ const EditSnapshot = () => {
     try {
       const canvas = await html2canvas(resultRef.current, {
         useCORS: true,
-        allowTaint: false,
+        allowTaint: true,
+        backgroundColor: null,
+        scale: 2,
       });
-      const dataUrl = canvas.toDataURL("image/png");
+
+      const dataURL = canvas.toDataURL("image/png");
       const a = document.createElement("a");
-      a.href = dataUrl;
+      a.href = dataURL;
       a.download = "snapshot.png";
       a.click();
     } catch (err) {
@@ -124,11 +133,13 @@ const EditSnapshot = () => {
 
   return (
     <div className={styles.container}>
-      {filter.map((item) => (
-        <button key={item} onClick={() => handleFilter(item)}>
-          {item}
-        </button>
-      ))}
+      <div className={styles.filterList}>
+        {filter.map((item) => (
+          <button key={item} onClick={() => handleFilter(item)}>
+            {item}
+          </button>
+        ))}
+      </div>
 
       <div>
         <label>축하 멘트를 적어주세요!</label>
