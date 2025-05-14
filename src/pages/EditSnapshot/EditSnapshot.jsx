@@ -76,12 +76,9 @@ const EditSnapshot = () => {
             canvas.width = img.width;
             canvas.height = img.height;
             const ctx = canvas.getContext("2d");
-
-            // 필터 적용
             ctx.filter =
               imgFilter && filterMap[imgFilter] ? filterMap[imgFilter] : "none";
             ctx.drawImage(img, 0, 0);
-
             resolve(canvas.toDataURL("image/png"));
           };
         });

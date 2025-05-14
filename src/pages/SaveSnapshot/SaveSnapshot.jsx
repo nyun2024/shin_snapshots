@@ -23,30 +23,15 @@ const SaveSnapshot = () => {
     if (!resultRef.current) return;
 
     try {
-      const dataUrl = await domtoimage.toPng(resultRef.current);
-
-      const userAgent = navigator.userAgent.toLowerCase();
-      const isIOSChrome =
-        /iphone|ipad|ipod/.test(userAgent) && /crios/.test(userAgent);
-
-      if (isIOSChrome) {
-        const newTab = window.open();
-        if (newTab) {
-          newTab.document.body.innerHTML = `
-            <p style="text-align: center; font-family: sans-serif;">길게 눌러 이미지를 저장하세요</p>
-            <img src="${dataUrl}" alt="snapshot" style="width: 100%;" />
-          `;
-        } else {
-          alert("팝업 차단이 활성화되어 이미지를 열 수 없습니다.");
-        }
-      } else {
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = "snapshot.png";
-        link.click();
-      }
+      const blob = await domtoimage.toBlob(resultRef.current);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "snapshot.png";
+      a.click();
+      URL.revokeObjectURL(url);
     } catch (err) {
-      console.error("이미지 다운로드 실패:", err);
+      console.error("이미지 저장 실패", err);
     }
   };
 
@@ -60,7 +45,7 @@ const SaveSnapshot = () => {
               key={idx}
               src={src}
               className={styles.capturedImg}
-              alt={`Filtered ${idx + 1}`}
+              alt="Filtered"
             />
           ))}
         </div>
