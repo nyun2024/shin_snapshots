@@ -64,18 +64,32 @@ const EditSnapshot = () => {
     setCongratulationText(e.target.value);
   };
 
-  const saveFilteredImages = () => {
-    // 이미지 데이터와 필터를 로컬스토리지에 저장
-    const filteredImages = images.map((src) => {
-      return {
-        src,
-        filter: imgFilter ? filterMap[imgFilter] : "",
-      };
-    });
+  const saveFilteredImages = async () => {
+    const filteredDataUrls = await Promise.all(
+      images.map((src) => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.crossOrigin = "anonymous";
+          img.src = src;
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
 
-    localStorage.setItem("filteredImages", JSON.stringify(filteredImages));
+            // 필터 적용
+            ctx.filter =
+              imgFilter && filterMap[imgFilter] ? filterMap[imgFilter] : "none";
+            ctx.drawImage(img, 0, 0);
+
+            resolve(canvas.toDataURL("image/png"));
+          };
+        });
+      })
+    );
+
+    localStorage.setItem("filteredImages", JSON.stringify(filteredDataUrls));
     localStorage.setItem("congratulationText", congratulationText);
-
     navigate("/save/" + type);
   };
 

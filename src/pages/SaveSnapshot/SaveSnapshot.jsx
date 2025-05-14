@@ -50,14 +50,14 @@ const SaveSnapshot = () => {
   return (
     <div className={styles.container}>
       <div className={styles.resultFrameWrap} ref={resultRef}>
+        {/* 프레임과 이미지를 캡처할 부분 */}
         <img src={frame} className={styles.resultFrame} alt="Frame" />
         <div className={styles.capturedImgWrap}>
-          {images.map((image, idx) => (
+          {images.map((src, idx) => (
             <img
               key={idx}
-              src={image.src}
+              src={src} // 필터가 적용된 이미지
               className={styles.capturedImg}
-              style={{ filter: image.filter }}
               alt="Filtered"
             />
           ))}
