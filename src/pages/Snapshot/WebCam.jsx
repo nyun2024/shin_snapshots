@@ -1,4 +1,3 @@
-// WebCam.jsx
 import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,8 +7,7 @@ import { frameImages } from "@constants/frameImages.js";
 const MAX_PHOTOS = 4;
 const STORAGE_KEY = "capturedImages";
 
-// 필터 정의
-const filters = {
+const filterMap = {
   "no filter": "none",
   gingham: "contrast(0.9) brightness(1.05) sepia(0.04)",
   moon: "grayscale(1) contrast(1.1) brightness(1.1)",
@@ -51,10 +49,12 @@ const WebCam = () => {
 
   useEffect(() => {
     const resultSnapshot = localStorage.getItem("resultSnapshot");
+
     if (images.length >= MAX_PHOTOS && resultSnapshot === "false") {
       const timer = setTimeout(() => {
         navigate(`/edit/${type}`);
       }, 500);
+
       return () => clearTimeout(timer);
     }
   }, [images, navigate]);
@@ -93,7 +93,6 @@ const WebCam = () => {
     const ratioVideo = videoWidth / videoHeight;
 
     let sx, sy, sWidth, sHeight;
-
     if (ratioVideo > ratioDisplay) {
       sHeight = videoHeight;
       sWidth = videoHeight * ratioDisplay;
@@ -112,18 +111,8 @@ const WebCam = () => {
     ctx.save();
     ctx.translate(canvas.width, 0); // 좌우 반전
     ctx.scale(-1, 1);
-    ctx.filter = filters[selectedFilter]; // 🔥 필터 적용
-    ctx.drawImage(
-      video,
-      sx,
-      sy,
-      sWidth,
-      sHeight,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+    ctx.filter = filterMap[selectedFilter] || "none"; // 필터 적용
+    ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
     ctx.restore();
 
     const dataURL = canvas.toDataURL("image/jpeg");
@@ -153,7 +142,7 @@ const WebCam = () => {
             height: "100%",
             objectFit: "cover",
             aspectRatio: "3/4",
-            filter: filters[selectedFilter], // 실시간 프리뷰에도 필터 적용
+            filter: filterMap[selectedFilter], // 필터 실시간 적용
           }}
         />
 
@@ -164,35 +153,28 @@ const WebCam = () => {
         )}
       </div>
 
-      <div className={styles.controls}>
-        <select
-          value={selectedFilter}
-          onChange={(e) => setSelectedFilter(e.target.value)}
-        >
-          {Object.keys(filters).map((key) => (
-            <option key={key} value={key}>
-              {key}
-            </option>
-          ))}
-        </select>
-
-        <button
-          onClick={startCountdown}
-          disabled={isCounting || images.length >= MAX_PHOTOS}
-        >
-          📸 캡처 ({images.length}/{MAX_PHOTOS})
-        </button>
-
-        <button onClick={clearAll}>🗑 전체 삭제</button>
-      </div>
-
-      <canvas ref={canvasRef} style={{ display: "none" }} />
-
-      <div className={styles.capturedImages} style={{ display: "none" }}>
-        {images.map((src, index) => (
-          <img key={index} src={src} alt={`Captured ${index + 1}`} />
+      <div className={styles.filterButtons}>
+        {Object.keys(filterMap).map((filter) => (
+          <button
+            key={filter}
+            onClick={() => setSelectedFilter(filter)}
+            disabled={isCounting}
+            className={selectedFilter === filter ? styles.active : ""}
+          >
+            {filter}
+          </button>
         ))}
       </div>
+
+      <button
+        onClick={startCountdown}
+        disabled={isCounting || images.length >= MAX_PHOTOS}
+      >
+        📸 캡처 ({images.length}/{MAX_PHOTOS})
+      </button>
+      <button onClick={clearAll}>🗑 전체 삭제</button>
+
+      <canvas ref={canvasRef} style={{ display: "none" }} />
     </>
   );
 };
