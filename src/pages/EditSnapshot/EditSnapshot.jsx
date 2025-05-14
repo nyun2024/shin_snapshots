@@ -69,9 +69,11 @@ const EditSnapshot = () => {
       images.map((src) => {
         return new Promise((resolve) => {
           const img = new Image();
-          img.crossOrigin = "anonymous";
+          // 필요 시 crossOrigin 설정 제거
+          // img.crossOrigin = "anonymous";
           img.src = src;
-          img.onload = async () => {
+
+          img.onload = () => {
             const canvas = document.createElement("canvas");
             canvas.width = img.width;
             canvas.height = img.height;
@@ -82,7 +84,10 @@ const EditSnapshot = () => {
             }
 
             ctx.drawImage(img, 0, 0);
-            resolve(canvas.toDataURL("image/png"));
+
+            requestAnimationFrame(() => {
+              resolve(canvas.toDataURL("image/png"));
+            });
           };
         });
       })
