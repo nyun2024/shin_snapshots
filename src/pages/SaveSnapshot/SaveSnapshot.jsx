@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { resultFrame } from "@constants/frameImages";
 import { useParams } from "react-router-dom";
 import styles from "./SaveSnapshot.module.scss";
-import html2canvas from "html2canvas";
+import domtoimage from "dom-to-image-more";
 
 const SaveSnapshot = () => {
   const [images, setImages] = useState([]);
@@ -22,43 +22,45 @@ const SaveSnapshot = () => {
   const downloadImage = async () => {
     if (!resultRef.current) return;
 
-    const canvas = await html2canvas(resultRef.current);
-    const dataUrl = canvas.toDataURL("image/png");
+    try {
+      const dataUrl = await domtoimage.toPng(resultRef.current);
 
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isIOSChrome =
-      /iphone|ipad|ipod/.test(userAgent) && /crios/.test(userAgent);
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isIOSChrome =
+        /iphone|ipad|ipod/.test(userAgent) && /crios/.test(userAgent);
 
-    if (isIOSChrome) {
-      const newTab = window.open();
-      if (newTab) {
-        newTab.document.body.innerHTML = `
-        <p style="text-align: center; font-family: sans-serif;">길게 눌러 이미지를 저장하세요</p>
-        <img src="${dataUrl}" alt="snapshot" style="width: 100%;" />
-      `;
+      if (isIOSChrome) {
+        const newTab = window.open();
+        if (newTab) {
+          newTab.document.body.innerHTML = `
+            <p style="text-align: center; font-family: sans-serif;">길게 눌러 이미지를 저장하세요</p>
+            <img src="${dataUrl}" alt="snapshot" style="width: 100%;" />
+          `;
+        } else {
+          alert("팝업 차단이 활성화되어 이미지를 열 수 없습니다.");
+        }
       } else {
-        alert("팝업 차단이 활성화되어 이미지를 열 수 없습니다.");
+        const link = document.createElement("a");
+        link.href = dataUrl;
+        link.download = "snapshot.png";
+        link.click();
       }
-    } else {
-      const link = document.createElement("a");
-      link.href = dataUrl;
-      link.download = "snapshot.png";
-      link.click();
+    } catch (err) {
+      console.error("이미지 다운로드 실패:", err);
     }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.resultFrameWrap} ref={resultRef}>
-        {/* 프레임과 이미지를 캡처할 부분 */}
         <img src={frame} className={styles.resultFrame} alt="Frame" />
         <div className={styles.capturedImgWrap}>
           {images.map((src, idx) => (
             <img
               key={idx}
-              src={src} // 필터가 적용된 이미지
+              src={src}
               className={styles.capturedImg}
-              alt="Filtered"
+              alt={`Filtered ${idx + 1}`}
             />
           ))}
         </div>

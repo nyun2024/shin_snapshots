@@ -13,6 +13,7 @@
   "homepage": "https://nyun2024.github.io/shin_snapshots/",
   "dependencies": {
     "classnames": "^2.5.1",
+    "dom-to-image-more": "^3.6.0",
     "gh-pages": "^6.3.0",
     "html2canvas": "^1.4.1",
     "react": "^19.1.0",
