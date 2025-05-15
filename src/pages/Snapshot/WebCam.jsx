@@ -1,3 +1,4 @@
+// WebCam.jsx
 import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { useNavigate, useParams } from "react-router-dom";
@@ -19,6 +20,12 @@ const filterMap = {
   blurBright: "brightness(1.1) saturate(1.2) contrast(0.95) blur(0.4px)",
   softGlow: "brightness(1.15) contrast(0.9) blur(0.4px)",
   rosy: "brightness(1.1) saturate(1.4) hue-rotate(-10deg) contrast(0.95)",
+};
+
+const videoConstraints = {
+  facingMode: "user",
+  width: { ideal: 720 },
+  height: { ideal: 960 },
 };
 
 const WebCam = () => {
@@ -81,37 +88,40 @@ const WebCam = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    const vw = video.videoWidth;
-    const vh = video.videoHeight;
-    const cw = (canvas.width = video.clientWidth);
-    const ch = (canvas.height = video.clientHeight);
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
 
-    // 비율 유지하면서 자르기
-    const ratioDisplay = cw / ch;
-    const ratioVideo = vw / vh;
+    const displayWidth = video.clientWidth;
+    const displayHeight = video.clientHeight;
 
-    let sx, sy, sWidth, sHeight;
-    if (ratioVideo > ratioDisplay) {
-      sHeight = vh;
-      sWidth = vh * ratioDisplay;
-      sx = (vw - sWidth) / 2;
-      sy = 0;
+    canvas.width = displayWidth;
+    canvas.height = displayHeight;
+
+    // 비율 맞춰 crop
+    const aspectRatio = displayWidth / displayHeight;
+    const actualRatio = videoWidth / videoHeight;
+
+    let sx = 0,
+      sy = 0,
+      sw = videoWidth,
+      sh = videoHeight;
+    if (actualRatio > aspectRatio) {
+      sw = videoHeight * aspectRatio;
+      sx = (videoWidth - sw) / 2;
     } else {
-      sWidth = vw;
-      sHeight = vw / ratioDisplay;
-      sx = 0;
-      sy = (vh - sHeight) / 2;
+      sh = videoWidth / aspectRatio;
+      sy = (videoHeight - sh) / 2;
     }
 
     ctx.save();
-    ctx.translate(cw, 0); // 좌우 반전
-    ctx.scale(-1, 1);
+    ctx.translate(canvas.width, 0);
+    ctx.scale(-1, 1); // mirror
     ctx.filter = filterMap[selectedFilter] || "none";
-    ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, cw, ch);
+    ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
     ctx.restore();
 
-    const dataURL = canvas.toDataURL("image/jpeg");
-    const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
+    const dataUrl = canvas.toDataURL("image/jpeg");
+    const newImages = [...images, dataUrl].slice(0, MAX_PHOTOS);
     setImages(newImages);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newImages));
   };
@@ -135,12 +145,11 @@ const WebCam = () => {
         <Webcam
           ref={webcamRef}
           mirrored={true}
-          videoConstraints={{ facingMode: "user" }}
+          videoConstraints={videoConstraints}
           style={{
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            aspectRatio: "3/4",
             filter: filterMap[selectedFilter],
           }}
         />
