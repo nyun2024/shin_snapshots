@@ -18,13 +18,13 @@ const Home = () => {
 
   return (
     <>
-      <div className={styles.title}>
+      {/* <div className={styles.title}>
         Happy
         <br />
         Birthday
         <br />
         <strong>Asakura Shin</strong>
-      </div>
+      </div> */}
       <div className={styles.frameButtonWrap}>
         <FrameTypeButton type="black" onClick={() => goToWebCam("black")} />
         <FrameTypeButton type="white" onClick={() => goToWebCam("white")} />
