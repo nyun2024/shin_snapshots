@@ -6,7 +6,9 @@ import html2canvas from "html2canvas";
 
 const EditSnapshot = () => {
   const [images, setImages] = useState([]);
-  const [congratulationText, setCongratulationText] = useState("Happy Birthday\nAsakura Shin");
+  const [congratulationText, setCongratulationText] = useState(
+    "Happy Birthday\nAsakura Shin"
+  );
   const resultRef = useRef();
 
   const navigate = useNavigate();
@@ -49,10 +51,27 @@ const EditSnapshot = () => {
       });
 
       const dataURL = canvas.toDataURL("image/png");
-      const a = document.createElement("a");
-      a.href = dataURL;
-      a.download = "snapshot.png";
-      a.click();
+
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isIOSChrome =
+        /iphone|ipad|ipod/.test(userAgent) && /crios/.test(userAgent);
+
+      if (isIOSChrome) {
+        const newTab = window.open();
+        if (newTab) {
+          newTab.document.body.innerHTML = `
+          <p style="text-align: center; font-family: sans-serif;">길게 눌러 이미지를 저장하세요</p>
+          <img src="${dataURL}" alt="snapshot" style="width: 100%;" />
+        `;
+        } else {
+          alert("팝업 차단이 활성화되어 이미지를 열 수 없습니다.");
+        }
+      } else {
+        const link = document.createElement("a");
+        link.href = dataURL;
+        link.download = "snapshot.png";
+        link.click();
+      }
     } catch (err) {
       console.error("이미지 저장 실패", err);
     }
