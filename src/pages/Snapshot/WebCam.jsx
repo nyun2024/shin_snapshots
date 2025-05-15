@@ -48,8 +48,8 @@ const WebCam = () => {
   }, []);
 
   useEffect(() => {
-    const resultSnapshot = localStorage.getItem("resultSnapshot");
-    if (images.length >= MAX_PHOTOS && resultSnapshot === "false") {
+    // const resultSnapshot = localStorage.getItem("resultSnapshot");
+    if (images.length >= MAX_PHOTOS) {
       const timer = setTimeout(() => {
         navigate(`/edit/${type}`);
       }, 500);
@@ -109,16 +109,28 @@ const WebCam = () => {
     ctx.save();
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
+
     ctx.filter = filterMap[selectedFilter] || "none";
-    ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, canvas.width, canvas.height); // 모바일 강제 렌더링 유도
+    ctx.drawImage(
+      video,
+      sx,
+      sy,
+      sWidth,
+      sHeight,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
     ctx.restore();
 
     const dataURL = canvas.toDataURL("image/jpeg");
     const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
     setImages(newImages);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newImages));
-    console.log("저장된 이미지", newImages);
-    console.log("저장된 필터 이미지", dataURL);
+
+    console.log("필터 적용된 이미지 저장됨:", dataURL);
   };
 
   const clearAll = () => {
@@ -166,7 +178,10 @@ const WebCam = () => {
         ))}
       </div>
 
-      <button onClick={startCountdown} disabled={isCounting || images.length >= MAX_PHOTOS}>
+      <button
+        onClick={startCountdown}
+        disabled={isCounting || images.length >= MAX_PHOTOS}
+      >
         📸 캡처 ({images.length}/{MAX_PHOTOS})
       </button>
       <button onClick={clearAll}>🗑 전체 삭제</button>

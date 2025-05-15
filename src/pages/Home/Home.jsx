@@ -12,8 +12,8 @@ const Home = () => {
 
   useEffect(() => {
     // WebCam 이미지 초기화
-    localStorage.removeItem("capturedImages");
-    localStorage.setItem("resultSnapshot", false);
+    localStorage.removeItem("filteredImages");
+    // localStorage.setItem("resultSnapshot", false);
   }, []);
 
   return (
