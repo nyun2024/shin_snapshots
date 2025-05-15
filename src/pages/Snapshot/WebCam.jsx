@@ -10,12 +10,12 @@ const STORAGE_KEY = "filteredImages";
 
 const filterMap = {
   "no filter": "none",
-  moon: "grayscale(1) brightness(1.1)",
-  gingham: "contrast(0.9) brightness(1.05) sepia(0.04)",
-  slumber: "saturate(0.66) brightness(1.05)",
-  lark: "contrast(1.1) saturate(1.2) brightness(1.05)",
-  reyes: "sepia(0.22) brightness(1.1) contrast(0.85)",
-  juno: "hue-rotate(-10deg) contrast(1.1) saturate(1.3)",
+  moon: "grayscale(1) brightness(1.05)", // 기존 1.1 -> 1.05로 줄임
+  gingham: "contrast(0.9) brightness(1.05) sepia(0.04)", // 살짝 조정
+  slumber: "saturate(1.1) brightness(0.65)",
+  lark: "contrast(1.1) saturate(1.15) brightness(1.05)",
+  reyes: "sepia(0.2) brightness(1.05) contrast(0.9)",
+  juno: "hue-rotate(-10deg) contrast(1.05) saturate(1.2)",
 };
 
 const videoConstraints = {
@@ -123,46 +123,162 @@ const WebCam = () => {
         break;
       case "gingham":
         for (let i = 0; i < data.length; i += 4) {
-          data[i] *= 1.05; // R
-          data[i + 1] *= 0.95; // G
-          data[i + 2] *= 0.9; // B
+          let r = data[i];
+          let g = data[i + 1];
+          let b = data[i + 2];
+
+          // brightness(1.05)
+          r *= 1.05;
+          g *= 1.05;
+          b *= 1.05;
+
+          // contrast(0.9)
+          r = (r - 128) * 0.9 + 128;
+          g = (g - 128) * 0.9 + 128;
+          b = (b - 128) * 0.9 + 128;
+
+          // sepia(0.04)
+          const sepiaR = r * 0.393 + g * 0.769 + b * 0.189;
+          const sepiaG = r * 0.349 + g * 0.686 + b * 0.168;
+          const sepiaB = r * 0.272 + g * 0.534 + b * 0.131;
+
+          r = r * 0.96 + sepiaR * 0.04;
+          g = g * 0.96 + sepiaG * 0.04;
+          b = b * 0.96 + sepiaB * 0.04;
+
+          // 값 보정 (0~255 범위로 클램핑)
+          data[i] = Math.min(255, Math.max(0, r));
+          data[i + 1] = Math.min(255, Math.max(0, g));
+          data[i + 2] = Math.min(255, Math.max(0, b));
         }
         break;
       case "slumber":
         for (let i = 0; i < data.length; i += 4) {
-          data[i] *= 0.66 * 1.05;
-          data[i + 1] *= 0.66 * 1.05;
-          data[i + 2] *= 0.66 * 1.05;
+          let r = data[i];
+          let g = data[i + 1];
+          let b = data[i + 2];
+
+          // 1️⃣ brightness(0.65)
+          r *= 0.65;
+          g *= 0.65;
+          b *= 0.65;
+
+          // 2️⃣ saturate(1.1)
+          const gray = r * 0.2126 + g * 0.7152 + b * 0.0722;
+          r = gray + (r - gray) * 1.1;
+          g = gray + (g - gray) * 1.1;
+          b = gray + (b - gray) * 1.1;
+
+          // 클램핑
+          data[i] = Math.min(255, Math.max(0, r));
+          data[i + 1] = Math.min(255, Math.max(0, g));
+          data[i + 2] = Math.min(255, Math.max(0, b));
         }
         break;
       case "lark":
         for (let i = 0; i < data.length; i += 4) {
-          data[i] *= 1.2 * 1.05;
-          data[i + 1] *= 1.1 * 1.05;
-          data[i + 2] *= 1.2 * 1.05;
+          let r = data[i];
+          let g = data[i + 1];
+          let b = data[i + 2];
+
+          // 1. contrast(1.1)
+          r = (r - 128) * 1.1 + 128;
+          g = (g - 128) * 1.1 + 128;
+          b = (b - 128) * 1.1 + 128;
+
+          // 2. saturate(1.15)
+          const gray = r * 0.2126 + g * 0.7152 + b * 0.0722;
+          r = gray + (r - gray) * 1.15;
+          g = gray + (g - gray) * 1.15;
+          b = gray + (b - gray) * 1.15;
+
+          // 3. brightness(1.05)
+          r *= 1.05;
+          g *= 1.05;
+          b *= 1.05;
+
+          // Clamp to [0, 255]
+          data[i] = Math.min(255, Math.max(0, r));
+          data[i + 1] = Math.min(255, Math.max(0, g));
+          data[i + 2] = Math.min(255, Math.max(0, b));
+          // data[i + 3] = alpha 그대로
         }
         break;
       case "reyes":
+      case "yourFilterName": // 원하는 이름으로 바꾸세요
         for (let i = 0; i < data.length; i += 4) {
-          const r = data[i],
-            g = data[i + 1],
-            b = data[i + 2];
-          data[i] = r * 0.393 + g * 0.769 + b * 0.189;
-          data[i + 1] = r * 0.349 + g * 0.686 + b * 0.168;
-          data[i + 2] = r * 0.272 + g * 0.534 + b * 0.131;
-          data[i] *= 0.9;
-          data[i + 1] *= 0.9;
-          data[i + 2] *= 0.9;
+          let r = data[i];
+          let g = data[i + 1];
+          let b = data[i + 2];
+
+          // 1. sepia(0.2)
+          const sr = r * 0.393 + g * 0.769 + b * 0.189;
+          const sg = r * 0.349 + g * 0.686 + b * 0.168;
+          const sb = r * 0.272 + g * 0.534 + b * 0.131;
+          r = r * 0.8 + sr * 0.2;
+          g = g * 0.8 + sg * 0.2;
+          b = b * 0.8 + sb * 0.2;
+
+          // 2. brightness(1.05)
+          r *= 1.05;
+          g *= 1.05;
+          b *= 1.05;
+
+          // 3. contrast(0.9)
+          r = (r - 128) * 0.9 + 128;
+          g = (g - 128) * 0.9 + 128;
+          b = (b - 128) * 0.9 + 128;
+
+          // Clamp to [0, 255]
+          data[i] = Math.min(255, Math.max(0, r));
+          data[i + 1] = Math.min(255, Math.max(0, g));
+          data[i + 2] = Math.min(255, Math.max(0, b));
+          // alpha (data[i + 3])는 그대로 유지
         }
         break;
+
       case "juno":
+        const cosA = Math.cos((-10 * Math.PI) / 180);
+        const sinA = Math.sin((-10 * Math.PI) / 180);
+        const m = [
+          0.213 + cosA * 0.787 - sinA * 0.213,
+          0.715 - cosA * 0.715 - sinA * 0.715,
+          0.072 - cosA * 0.072 + sinA * 0.928,
+          0.213 - cosA * 0.213 + sinA * 0.143,
+          0.715 + cosA * 0.285 + sinA * 0.14,
+          0.072 - cosA * 0.072 - sinA * 0.283,
+          0.213 - cosA * 0.213 - sinA * 0.787,
+          0.715 - cosA * 0.715 + sinA * 0.715,
+          0.072 + cosA * 0.928 + sinA * 0.072,
+        ];
+
         for (let i = 0; i < data.length; i += 4) {
-          const r = data[i],
-            g = data[i + 1],
-            b = data[i + 2];
-          data[i] = r * 1.1; // Red
-          data[i + 1] = g * 1.0; // Green
-          data[i + 2] = b * 1.3; // Blue
+          let r = data[i];
+          let g = data[i + 1];
+          let b = data[i + 2];
+
+          // hue-rotate(-10deg)
+          const r2 = r * m[0] + g * m[1] + b * m[2];
+          const g2 = r * m[3] + g * m[4] + b * m[5];
+          const b2 = r * m[6] + g * m[7] + b * m[8];
+          r = r2;
+          g = g2;
+          b = b2;
+
+          // contrast(1.05)
+          r = (r - 128) * 1.05 + 128;
+          g = (g - 128) * 1.05 + 128;
+          b = (b - 128) * 1.05 + 128;
+
+          // saturate(1.2)
+          const sr = r * 0.213 + g * 0.715 + b * 0.072;
+          r = sr + (r - sr) * 1.2;
+          g = sr + (g - sr) * 1.2;
+          b = sr + (b - sr) * 1.2;
+
+          data[i] = Math.min(255, Math.max(0, r));
+          data[i + 1] = Math.min(255, Math.max(0, g));
+          data[i + 2] = Math.min(255, Math.max(0, b));
         }
         break;
       default:
