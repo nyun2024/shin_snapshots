@@ -48,14 +48,13 @@ const WebCam = () => {
   }, []);
 
   useEffect(() => {
-    // const resultSnapshot = localStorage.getItem("resultSnapshot");
     if (images.length >= MAX_PHOTOS) {
       const timer = setTimeout(() => {
         navigate(`/edit/${type}`);
       }, 500);
       return () => clearTimeout(timer);
     }
-  }, [images, navigate]);
+  }, [images, navigate, type]);
 
   const startCountdown = () => {
     if (images.length >= MAX_PHOTOS || isCounting) return;
@@ -82,55 +81,39 @@ const WebCam = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    const videoWidth = video.videoWidth;
-    const videoHeight = video.videoHeight;
-    const displayWidth = video.clientWidth;
-    const displayHeight = video.clientHeight;
+    const vw = video.videoWidth;
+    const vh = video.videoHeight;
+    const cw = (canvas.width = video.clientWidth);
+    const ch = (canvas.height = video.clientHeight);
 
-    const ratioDisplay = displayWidth / displayHeight;
-    const ratioVideo = videoWidth / videoHeight;
+    // 비율 유지하면서 자르기
+    const ratioDisplay = cw / ch;
+    const ratioVideo = vw / vh;
 
     let sx, sy, sWidth, sHeight;
     if (ratioVideo > ratioDisplay) {
-      sHeight = videoHeight;
-      sWidth = videoHeight * ratioDisplay;
-      sx = (videoWidth - sWidth) / 2;
+      sHeight = vh;
+      sWidth = vh * ratioDisplay;
+      sx = (vw - sWidth) / 2;
       sy = 0;
     } else {
-      sWidth = videoWidth;
-      sHeight = videoWidth / ratioDisplay;
+      sWidth = vw;
+      sHeight = vw / ratioDisplay;
       sx = 0;
-      sy = (videoHeight - sHeight) / 2;
+      sy = (vh - sHeight) / 2;
     }
 
-    canvas.width = displayWidth;
-    canvas.height = displayHeight;
-
     ctx.save();
-    ctx.translate(canvas.width, 0);
+    ctx.translate(cw, 0); // 좌우 반전
     ctx.scale(-1, 1);
-
     ctx.filter = filterMap[selectedFilter] || "none";
-    ctx.fillRect(0, 0, canvas.width, canvas.height); // 모바일 강제 렌더링 유도
-    ctx.drawImage(
-      video,
-      sx,
-      sy,
-      sWidth,
-      sHeight,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+    ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, cw, ch);
     ctx.restore();
 
     const dataURL = canvas.toDataURL("image/jpeg");
     const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
     setImages(newImages);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newImages));
-
-    console.log("필터 적용된 이미지 저장됨:", dataURL);
   };
 
   const clearAll = () => {
@@ -142,7 +125,11 @@ const WebCam = () => {
     <>
       <div className={styles.webCamFrame}>
         {images.length < MAX_PHOTOS && frames?.[images.length] && (
-          <img src={frames[images.length]} alt={`Frame ${images.length}`} />
+          <img
+            src={frames[images.length]}
+            alt={`Frame ${images.length}`}
+            className={styles.frameImage}
+          />
         )}
 
         <Webcam
@@ -154,7 +141,7 @@ const WebCam = () => {
             height: "100%",
             objectFit: "cover",
             aspectRatio: "3/4",
-            filter: filterMap[selectedFilter], // 실시간 필터 미리보기
+            filter: filterMap[selectedFilter],
           }}
         />
 
