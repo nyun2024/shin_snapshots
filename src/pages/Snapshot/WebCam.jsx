@@ -10,16 +10,12 @@ const STORAGE_KEY = "filteredImages";
 
 const filterMap = {
   "no filter": "none",
+  moon: "grayscale(1) brightness(1.1)",
   gingham: "contrast(0.9) brightness(1.05) sepia(0.04)",
-  moon: "grayscale(1) contrast(1.1) brightness(1.1)",
+  slumber: "saturate(0.66) brightness(1.05)",
   lark: "contrast(1.1) saturate(1.2) brightness(1.05)",
   reyes: "sepia(0.22) brightness(1.1) contrast(0.85)",
   juno: "hue-rotate(-10deg) contrast(1.1) saturate(1.3)",
-  slumber: "saturate(0.66) brightness(1.05)",
-  willow: "grayscale(0.5) sepia(0.2) brightness(1.05)",
-  blurBright: "brightness(1.1) saturate(1.2) contrast(0.95) blur(0.4px)",
-  softGlow: "brightness(1.15) contrast(0.9) blur(0.4px)",
-  rosy: "brightness(1.1) saturate(1.4) hue-rotate(-10deg) contrast(0.95)",
 };
 
 const videoConstraints = {
@@ -88,40 +84,95 @@ const WebCam = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    const videoWidth = video.videoWidth;
-    const videoHeight = video.videoHeight;
+    const vw = video.videoWidth;
+    const vh = video.videoHeight;
+    const cw = (canvas.width = video.clientWidth);
+    const ch = (canvas.height = video.clientHeight);
 
-    const displayWidth = video.clientWidth;
-    const displayHeight = video.clientHeight;
+    const ratioDisplay = cw / ch;
+    const ratioVideo = vw / vh;
 
-    canvas.width = displayWidth;
-    canvas.height = displayHeight;
-
-    // 비율 맞춰 crop
-    const aspectRatio = displayWidth / displayHeight;
-    const actualRatio = videoWidth / videoHeight;
-
-    let sx = 0,
-      sy = 0,
-      sw = videoWidth,
-      sh = videoHeight;
-    if (actualRatio > aspectRatio) {
-      sw = videoHeight * aspectRatio;
-      sx = (videoWidth - sw) / 2;
+    let sx, sy, sWidth, sHeight;
+    if (ratioVideo > ratioDisplay) {
+      sHeight = vh;
+      sWidth = vh * ratioDisplay;
+      sx = (vw - sWidth) / 2;
+      sy = 0;
     } else {
-      sh = videoWidth / aspectRatio;
-      sy = (videoHeight - sh) / 2;
+      sWidth = vw;
+      sHeight = vw / ratioDisplay;
+      sx = 0;
+      sy = (vh - sHeight) / 2;
     }
 
     ctx.save();
-    ctx.translate(canvas.width, 0);
-    ctx.scale(-1, 1); // mirror
-    ctx.filter = filterMap[selectedFilter] || "none";
-    ctx.drawImage(video, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+    ctx.translate(cw, 0); // mirror
+    ctx.scale(-1, 1);
+    ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, cw, ch);
     ctx.restore();
 
-    const dataUrl = canvas.toDataURL("image/jpeg");
-    const newImages = [...images, dataUrl].slice(0, MAX_PHOTOS);
+    const imageData = ctx.getImageData(0, 0, cw, ch);
+    const data = imageData.data;
+
+    switch (selectedFilter) {
+      case "moon":
+        for (let i = 0; i < data.length; i += 4) {
+          const avg = ((data[i] + data[i + 1] + data[i + 2]) / 3) * 1.1;
+          data[i] = data[i + 1] = data[i + 2] = avg;
+        }
+        break;
+      case "gingham":
+        for (let i = 0; i < data.length; i += 4) {
+          data[i] *= 1.05; // R
+          data[i + 1] *= 0.95; // G
+          data[i + 2] *= 0.9; // B
+        }
+        break;
+      case "slumber":
+        for (let i = 0; i < data.length; i += 4) {
+          data[i] *= 0.66 * 1.05;
+          data[i + 1] *= 0.66 * 1.05;
+          data[i + 2] *= 0.66 * 1.05;
+        }
+        break;
+      case "lark":
+        for (let i = 0; i < data.length; i += 4) {
+          data[i] *= 1.2 * 1.05;
+          data[i + 1] *= 1.1 * 1.05;
+          data[i + 2] *= 1.2 * 1.05;
+        }
+        break;
+      case "reyes":
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i],
+            g = data[i + 1],
+            b = data[i + 2];
+          data[i] = r * 0.393 + g * 0.769 + b * 0.189;
+          data[i + 1] = r * 0.349 + g * 0.686 + b * 0.168;
+          data[i + 2] = r * 0.272 + g * 0.534 + b * 0.131;
+          data[i] *= 0.9;
+          data[i + 1] *= 0.9;
+          data[i + 2] *= 0.9;
+        }
+        break;
+      case "juno":
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i],
+            g = data[i + 1],
+            b = data[i + 2];
+          data[i] = r * 1.1; // Red
+          data[i + 1] = g * 1.0; // Green
+          data[i + 2] = b * 1.3; // Blue
+        }
+        break;
+      default:
+        break;
+    }
+
+    ctx.putImageData(imageData, 0, 0);
+
+    const dataURL = canvas.toDataURL("image/jpeg");
+    const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
     setImages(newImages);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newImages));
   };
