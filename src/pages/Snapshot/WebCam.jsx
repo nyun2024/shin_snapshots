@@ -1,17 +1,17 @@
-// WebCam.jsx
 import { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { useNavigate, useParams } from "react-router-dom";
 import styles from "./WebCam.module.scss";
 import { frameImages } from "@constants/frameImages.js";
+import camera from "@img/camera.png";
 
 const MAX_PHOTOS = 4;
 const STORAGE_KEY = "filteredImages";
 
 const filterMap = {
   "no filter": "none",
-  moon: "grayscale(1) brightness(1.05)", // 기존 1.1 -> 1.05로 줄임
-  gingham: "contrast(0.9) brightness(1.05) sepia(0.04)", // 살짝 조정
+  moon: "grayscale(1) brightness(1.05)",
+  gingham: "contrast(0.9) brightness(1.05) sepia(0.04)",
   slumber: "saturate(1.1) brightness(0.65)",
   lark: "contrast(1.1) saturate(1.15) brightness(1.05)",
   reyes: "sepia(0.2) brightness(1.05) contrast(0.9)",
@@ -237,7 +237,7 @@ const WebCam = () => {
         }
         break;
 
-      case "juno":
+      case "juno": {
         const cosA = Math.cos((-10 * Math.PI) / 180);
         const sinA = Math.sin((-10 * Math.PI) / 180);
         const m = [
@@ -281,6 +281,7 @@ const WebCam = () => {
           data[i + 2] = Math.min(255, Math.max(0, b));
         }
         break;
+      }
       default:
         break;
     }
@@ -300,32 +301,35 @@ const WebCam = () => {
 
   return (
     <>
-      <div className={styles.webCamFrame}>
-        {images.length < MAX_PHOTOS && frames?.[images.length] && (
-          <img
-            src={frames[images.length]}
-            alt={`Frame ${images.length}`}
-            className={styles.frameImage}
+      <div className={styles.cameraWebCam}>
+        <img src={camera} className={styles.cameraImg} />
+        <div className={styles.webCamFrame}>
+          {images.length < MAX_PHOTOS && frames?.[images.length] && (
+            <img
+              src={frames[images.length]}
+              alt={`Frame ${images.length}`}
+              className={styles.frameImg}
+            />
+          )}
+
+          <Webcam
+            ref={webcamRef}
+            mirrored={true}
+            videoConstraints={videoConstraints}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              filter: filterMap[selectedFilter],
+            }}
           />
-        )}
 
-        <Webcam
-          ref={webcamRef}
-          mirrored={true}
-          videoConstraints={videoConstraints}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            filter: filterMap[selectedFilter],
-          }}
-        />
-
-        {countdown > 0 && (
-          <div className={styles.countdown}>
-            <span>{countdown}</span>
-          </div>
-        )}
+          {countdown > 0 && (
+            <div className={styles.countdown}>
+              <span>{countdown}</span>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className={styles.filterButtons}>

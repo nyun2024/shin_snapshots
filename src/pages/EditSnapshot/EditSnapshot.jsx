@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { resultFrame } from "@constants/frameImages.js";
 import styles from "./EditSnapshot.module.scss";
 import html2canvas from "html2canvas";
@@ -10,8 +10,6 @@ const EditSnapshot = () => {
     "Happy Birthday\nAsakura Shin"
   );
   const resultRef = useRef();
-
-  const navigate = useNavigate();
   const { type } = useParams();
   const frame = resultFrame[type];
 
@@ -31,12 +29,6 @@ const EditSnapshot = () => {
 
   const handleCongText = (e) => {
     setCongratulationText(e.target.value);
-  };
-
-  const saveFilteredImages = () => {
-    localStorage.setItem("filteredImages", JSON.stringify(images));
-    localStorage.setItem("congratulationText", congratulationText);
-    navigate("/save/" + type);
   };
 
   const downloadImage = async () => {
@@ -105,8 +97,6 @@ const EditSnapshot = () => {
           ))}
         </div>
       </div>
-
-      <button onClick={saveFilteredImages}>수정 완료</button>
       <button onClick={downloadImage}>다운로드</button>
     </div>
   );

@@ -1,11 +1,23 @@
 @use "../../assets/styles/mixin.scss" as *;
 @use "../../assets/styles/variables" as *;
 
+.cameraWebCam {
+  position: relative;
+  padding-top: 65px;
+  padding-bottom: 80px;
+}
+.cameraImg {
+  width: 750px;
+  position: absolute;
+  z-index: 12;
+  top: 0;
+  left: 0;
+}
 .webCamFrame {
   position: relative;
   width: 521px;
   height: 317px;
-  img {
+  .frameImg {
     position: absolute;
     z-index: 10;
   }
