@@ -19,7 +19,7 @@
   src: url("/fonts/FreightDispCmpProBook-Italic.woff2") format("woff2"),
     url("/fonts/FreightDispCmpProBook-Italic.woff") format("woff");
   font-weight: normal;
-  font-style: italic;
+  font-style: normal; /* italic → normal */
   font-display: swap;
 }
 @font-face {
