@@ -1,35 +1,45 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import FrameTypeButton from "@components/button/FrameTypeButton";
+import useIsMobile from "@utils/useIsMobile";
 import styles from "./Home.module.scss";
+import Container from "@components/common/Container";
+import classNames from "classnames";
+import shin01 from "@img/home/home_shin01.png";
+import starLine from "@img/home/StarLine.gif";
 
 const Home = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
-  const goToWebCam = (type) => {
-    navigate(`/webcam/${type}`);
+  const goToSelect = () => {
+    navigate("/select");
   };
 
   useEffect(() => {
     // WebCam 이미지 초기화
     localStorage.removeItem("filteredImages");
-    // localStorage.setItem("resultSnapshot", false);
   }, []);
 
   return (
-    <>
-      {/* <div className={styles.title}>
-        Happy
+    <Container
+      className={classNames(
+        styles.homeContents,
+        isMobile ? styles.homeMobile : styles.homePC
+      )}
+      isHome
+    >
+      <h2 className={styles.title}>
+        Happy Birthday
         <br />
-        Birthday
-        <br />
-        <strong>Asakura Shin</strong>
-      </div> */}
-      <div className={styles.frameButtonWrap}>
-        <FrameTypeButton type="black" onClick={() => goToWebCam("black")} />
-        <FrameTypeButton type="white" onClick={() => goToWebCam("white")} />
+        Shin
+      </h2>
+      <div className={styles.homeMainWrap}>
+        <img src={starLine} className={styles.starLine} />
+        <div className={styles.imgWrap}>
+          <img src={shin01} className={styles.mainImg} alt="home image" />
+        </div>
       </div>
-    </>
+    </Container>
   );
 };
 

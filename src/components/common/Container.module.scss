@@ -1,0 +1,23 @@
+@use "../../assets/styles/mixin.scss" as *;
+@use "../../assets/styles/variables" as *;
+
+.container {
+  background-color: $blue;
+  position: relative;
+  min-height: 100vh;
+  overflow-y: auto;
+  &.mobile {
+    padding: 38px 20px 40px 20px;
+  }
+  &.pc {
+    padding: 44px 30px 40px 30px;
+    .contents {
+      min-width: 700px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+  }
+  &.isHome.mobile {
+    padding: 38px 10px 40px 10px;
+  }
+}

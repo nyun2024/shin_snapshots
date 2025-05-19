@@ -1,4 +1,43 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@font-face {
+  font-family: "FreightBig Pro";
+  src: url("/fonts/FreightBigProSemibold-Regular.woff2") format("woff2"),
+    url("/fonts/FreightBigProSemibold-Regular.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FreightTextCmp Pro";
+  src: url("/fonts/FreightTextCmpPro-BoldItalic.woff2") format("woff2"),
+    url("/fonts/FreightTextCmpPro-BoldItalic.woff") format("woff");
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FreightDispCmp Pro Book";
+  src: url("/fonts/FreightDispCmpProBook-Italic.woff2") format("woff2"),
+    url("/fonts/FreightDispCmpProBook-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FreightTextCmp Pro Book";
+  src: url("/fonts/FreightTextCmpProBook-Italic.woff2") format("woff2"),
+    url("/fonts/FreightTextCmpProBook-Italic.woff") format("woff");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FreightBig Pro Book";
+  src: url("/fonts/FreightBigProBook-Regular.woff2") format("woff2"),
+    url("/fonts/FreightBigProBook-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 @font-face {
   font-family: "InkLipquid";
   src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/InkLipquid.woff")
@@ -12,4 +51,194 @@
     format("woff2");
   font-weight: 700;
   font-style: normal;
+}
+
+// reset
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  font: inherit;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+  border: 0;
+  font-weight: 400;
+}
+
+html,
+body {
+  font-family: "PTNoeulB", Helvetica, Dotum, "돋움", Apple SD Gothic Neo,
+    sans-serif;
+  color: #222;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+button {
+  background: inherit;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  overflow: visible;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  font-family: "PTNoeulB", Helvetica, Dotum, "돋움", Apple SD Gothic Neo,
+    sans-serif;
+}
+a {
+  color: #222;
+  text-decoration: none;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  text-decoration: none;
+}
+a:hover,
+a:active {
+  color: #222;
+  text-decoration: none;
+}
+input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font-family: "PTNoeulB";
+}
+input:focus,
+input:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+input::-ms-clear {
+  display: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+  -webkit-tap-highlight-color: transparent !important;
+  touch-action: manipulation !important;
+  appearance: none !important;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+* {
+  box-sizing: border-box;
 }

@@ -3,12 +3,17 @@ import Home from "@pages/Home/Home";
 import WebCam from "@pages/Snapshot/WebCam";
 import EditSnapshot from "@pages/EditSnapshot/EditSnapshot";
 import SaveSnapshot from "@pages/SaveSnapshot/SaveSnapshot";
+import SelectFrame from "@pages/SelectFrame/SelectFrame";
 
 const router = createHashRouter(
   [
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/select",
+      element: <SelectFrame />,
     },
     {
       path: "/webcam/:type",

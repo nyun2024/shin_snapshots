@@ -1,0 +1,97 @@
+@use "../../assets/styles/mixin.scss" as *;
+@use "../../assets/styles/variables" as *;
+
+.header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-bottom: 1px solid $yellow;
+  background-color: $blue;
+  .headerInner {
+    width: 100%;
+    height: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    @include font-style($font-eng-big, 16px, 400, $yellow);
+    a {
+      @include font-style($font-eng-big, 16px, 400, $yellow);
+    }
+    div {
+      text-align: center;
+      height: 100%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      &:first-child {
+        border-right: 1px solid $yellow;
+        &::after {
+          content: "";
+          width: 12px;
+          height: 12px;
+          background-image: url(../../assets/img/star.png);
+          background-size: cover;
+          background-repeat: no-repeat;
+          position: absolute;
+          bottom: -6px;
+          right: -6px;
+        }
+      }
+      &:last-child {
+        border-left: 1px solid $yellow;
+        &::after {
+          content: "";
+          width: 12px;
+          height: 12px;
+          background-image: url(../../assets/img/star.png);
+          background-size: cover;
+          background-repeat: no-repeat;
+          position: absolute;
+          bottom: -6px;
+          left: -6px;
+        }
+      }
+    }
+  }
+  .ect {
+    width: 24%;
+  }
+  .mainLink {
+  }
+  &.mobile {
+    height: 38px;
+  }
+  &.pc {
+    height: 44px;
+    .headerInner {
+      font-size: 18px;
+      a {
+        font-size: 18px;
+      }
+      div {
+        &:first-child {
+          &::after {
+            content: "";
+            width: 16px;
+            height: 16px;
+            bottom: -8px;
+            right: -8px;
+          }
+        }
+        &:last-child {
+          &::after {
+            content: "";
+            width: 16px;
+            height: 16px;
+            bottom: -8px;
+            left: -8px;
+          }
+        }
+      }
+    }
+  }
+}
