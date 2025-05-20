@@ -1,4 +1,12 @@
 @font-face {
+  font-family: "FreightBig Pro Light";
+  src: url("/fonts/FreightBigProLight-Regular.woff2") format("woff2"),
+    url("/fonts/FreightBigProLight-Regular.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
   font-family: "FreightBig Pro";
   src: url("/fonts/FreightBigProSemibold-Regular.woff2") format("woff2"),
     url("/fonts/FreightBigProSemibold-Regular.woff") format("woff");
@@ -149,9 +157,7 @@ body {
   font-family: "PTNoeulB", Helvetica, Dotum, "돋움", Apple SD Gothic Neo,
     sans-serif;
   color: #222;
-}
-html {
-  // overflow-y: hidden;
+  background-color: #006dd7;
 }
 
 article,

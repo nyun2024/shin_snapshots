@@ -19,9 +19,9 @@
     display: flex;
     justify-content: space-between;
     align-items: stretch;
-    @include font-style($font-eng-big, 16px, 400, $yellow);
+    @include font-style($font-eng-big-light, 16px, 400, $yellow);
     a {
-      @include font-style($font-eng-big, 16px, 400, $yellow);
+      @include font-style($font-eng-big-light, 16px, 400, $yellow);
     }
     div {
       text-align: center;
@@ -69,11 +69,11 @@
     height: 40px;
   }
   &.pc {
-    height: 44px;
+    height: 50px;
     .headerInner {
-      font-size: 18px;
+      font-size: 22px;
       a {
-        font-size: 18px;
+        font-size: 22px;
       }
       div {
         &:first-child {
