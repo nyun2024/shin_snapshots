@@ -2,7 +2,7 @@
 @use "../../assets/styles/mixin.scss" as *;
 
 .homeContents {
-  padding: 55px 0 50px;
+  padding-top: 55px;
 }
 
 .title {
@@ -98,8 +98,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 44px);
-  padding: 60px 0 100px;
+  min-height: calc(100dvh - 44px);
+  padding-top: 60px;
   .contentsInner {
     display: flex;
     align-items: center;
