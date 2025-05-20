@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import black from "@img/frame/black/all_black_frame.png";
 import white from "@img/frame/white/all_white_frame.png";
+import useIsMobile from "@utils/useIsMobile";
 import styles from "./FrameTypeButton.module.scss";
+import classNames from "classnames";
 
 const imgs = {
   black,
@@ -11,6 +13,7 @@ const imgs = {
 const FrameTypeButton = ({ type, onClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const imgSrc = imgs[type];
+  const isMobile = useIsMobile();
 
   const handleZoomClick = () => {
     setIsOpen(true);
@@ -34,17 +37,26 @@ const FrameTypeButton = ({ type, onClick }) => {
 
   return (
     <>
-      <div className={styles.frameTypeButton}>
+      <div
+        className={classNames(
+          isMobile ? styles.mobile : styles.pc,
+          styles.frameTypeButton
+        )}
+      >
+        <div className={styles.frameName}>{type}</div>
         <div className={styles.imgWrap}>
           {imgSrc && <img src={imgSrc} alt={`${type} icon`} />}
-          <button type="button" onClick={handleZoomClick}>
-            확대
-          </button>
         </div>
-        <div>{type}</div>
-        <button type="button" onClick={onClick}>
-          선택
-        </button>
+        <button
+          type="button"
+          className={styles.selectBtn}
+          onClick={onClick}
+        ></button>
+        <button
+          type="button"
+          className={styles.zoomBtn}
+          onClick={handleZoomClick}
+        ></button>
       </div>
 
       {isOpen && (

@@ -122,7 +122,7 @@
     }
   }
   .shinProfile {
-    width: 80%;
+    width: 90%;
     li {
       @include font-style($font-eng-big-light, 22px, 300, $yellow);
       min-height: 56px;
@@ -130,7 +130,7 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid rgba(255, 254, 55, 0.49);
-      padding: 11px 0 17px;
+      padding: 11px 10px 17px;
     }
     label {
       display: inline-flex;

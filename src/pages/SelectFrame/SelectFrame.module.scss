@@ -1,0 +1,21 @@
+.selectContainer {
+  .title {
+    text-align: center;
+  }
+  .frameContainer {
+    display: flex;
+    gap: 20px;
+  }
+  &.mobile {
+    .title {
+      font-size: 22px;
+      padding: 50px 0 30px;
+    }
+  }
+  &.pc {
+    .title {
+      font-size: 24px;
+      padding: 64px 0 48px;
+    }
+  }
+}
