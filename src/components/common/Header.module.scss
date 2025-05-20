@@ -7,7 +7,9 @@
   top: 0;
   left: 0;
   border-bottom: 1px solid $yellow;
-  background-color: $blue;
+  background-color: transparent;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   z-index: 101;
   .headerInner {
     width: 100%;
@@ -64,7 +66,7 @@
   .mainLink {
   }
   &.mobile {
-    height: 38px;
+    height: 40px;
   }
   &.pc {
     height: 44px;

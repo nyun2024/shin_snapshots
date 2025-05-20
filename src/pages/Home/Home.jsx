@@ -28,19 +28,20 @@ const Home = () => {
       )}
       isHome
     >
-      <h2 className={styles.title}>
-        Happy Birthday
-        <br />
-        Shin
-      </h2>
-      <div className={styles.homeMainWrap}>
-        <img src={starLine} className={styles.starLine} />
-        <div className={styles.imgWrap}>
-          <img src={shin01} className={styles.mainImg} alt="home image" />
-          <div className={styles.birth}></div>
-          <button type="button" className={styles.goBtn} onClick={goToSelect}>
-            <span>GO</span>
-          </button>
+      <div className={styles.contentsInner}>
+        <h2 className={styles.title}>
+          <div>Happy Birthday</div>
+          <div>{!isMobile && "Asakura "}Shin</div>
+        </h2>
+        <div className={styles.homeMainWrap}>
+          <img src={starLine} className={styles.starLine} />
+          <div className={styles.imgWrap}>
+            <img src={shin01} className={styles.mainImg} alt="home image" />
+            <div className={styles.birth}></div>
+            <button type="button" className={styles.goBtn} onClick={goToSelect}>
+              <span>GO</span>
+            </button>
+          </div>
         </div>
       </div>
     </Container>
