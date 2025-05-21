@@ -34,6 +34,9 @@ const WebCam = () => {
   const frames = frameImages[type];
   const navigate = useNavigate();
   const [isMobileOnly, setIsMobileOnly] = useState(false);
+const containerRef = useRef(null);
+const [adjustedWidth, setAdjustedWidth] = useState(0);
+const [adjustedHeight, setAdjustedHeight] = useState(0);
 
   const [images, setImages] = useState([]);
   const [countdown, setCountdown] = useState(0);
@@ -314,6 +317,17 @@ const WebCam = () => {
     localStorage.removeItem(STORAGE_KEY);
   };
 
+  useEffect(() => {
+  if (containerRef.current) {
+    const parentHeight = containerRef.current.offsetHeight;
+    const parentWidth = containerRef.current.offsetWidth;
+    const widthWithMargin = parentHeight * 0.69; // 100% - 18% = 82%
+    const heightWithMargin = parentWidth * 0.58; // 100% - 18% = 82%
+    setAdjustedWidth(widthWithMargin);
+    setAdjustedHeight(heightWithMargin);
+  }
+}, [isMobileOnly]);
+
   return (
     <Container
       className={classNames(
@@ -345,7 +359,7 @@ const WebCam = () => {
           >
             Click
           </button>
-          <div className={styles.webCamFrame}>
+          <div className={styles.webCamFrame}  ref={containerRef}>
             {type === "white" &&
               images.length < MAX_PHOTOS &&
               frames?.[images.length] && (
@@ -355,17 +369,35 @@ const WebCam = () => {
                   className={styles.frameImg}
                 />
               )}
-            <Webcam
-              ref={webcamRef}
-              mirrored={true}
-              videoConstraints={videoConstraints}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                filter: filterMap[selectedFilter],
-              }}
-            />
+              <div className={styles.webCamVideo}>
+                <Webcam
+                  ref={webcamRef}
+                  mirrored={true}
+                  videoConstraints={videoConstraints}
+                  style={isMobileOnly ? {
+                    // width: "100%",
+                    // height: "100%",
+                    // objectFit: "cover",
+                    // rotate: '90deg',
+                    // filter: filterMap[selectedFilter],
+                    width: adjustedWidth + "px", // 부모의 높이를 너비에 적용
+                    height: adjustedHeight + "px",
+                    transform: "rotate(90deg)",
+                    transformOrigin: "center center",
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    translate: "-50% -50%",
+                    objectFit: "cover",
+                    filter: filterMap[selectedFilter],
+                  } : {
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    filter: filterMap[selectedFilter]
+                  }}
+                />
+              </div>
 
             {countdown > 0 && (
               <div className={styles.countdown}>

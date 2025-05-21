@@ -61,6 +61,11 @@
     opacity: 0.6;
   }
 }
+.webCamVideo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
 .webCamContainer.isMobileOnly {
   padding: 0;
