@@ -7,7 +7,7 @@ import white2 from "@img/frame/white/white2.png";
 import white3 from "@img/frame/white/white3.png";
 import white4 from "@img/frame/white/white4.png";
 
-import blackFrame from "@img/frame/black/all_black_frame.png";
+import blackFrame from "@img/frame/black/black_frame2.png";
 import whiteFrame from "@img/frame/white/all_white_frame.png";
 
 export const frameImages = {

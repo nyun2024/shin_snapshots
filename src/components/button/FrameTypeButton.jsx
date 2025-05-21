@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import black from "@img/frame/black/all_black_frame.png";
+import black from "@img/frame/black/black_frame2.png";
 import white from "@img/frame/white/all_white_frame.png";
 import useIsMobile from "@utils/useIsMobile";
 import styles from "./FrameTypeButton.module.scss";

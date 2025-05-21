@@ -1,0 +1,16 @@
+.filterBtn {
+  height: 36px;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 0 16px;
+  border-radius: 17px;
+  font-size: 17px;
+  margin-bottom: 18px;
+  & + .filterBtn {
+    margin-left: 12px;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}

@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./WebCam.module.scss";
 import { frameImages } from "@constants/frameImages.js";
 import camera from "@img/camera.png";
+import Container from "@components/common/Container";
+import FilterButton from "../../components/button/FilterButton";
 
 const MAX_PHOTOS = 4;
 const STORAGE_KEY = "filteredImages";
@@ -300,61 +302,66 @@ const WebCam = () => {
   };
 
   return (
-    <>
-      <div className={styles.cameraWebCam}>
-        <img src={camera} className={styles.cameraImg} />
-        <div className={styles.webCamFrame}>
-          {images.length < MAX_PHOTOS && frames?.[images.length] && (
-            <img
-              src={frames[images.length]}
-              alt={`Frame ${images.length}`}
-              className={styles.frameImg}
+    <Container className={styles.webCamContainer}>
+      <div className={styles.webCamInner}>
+        <div className={styles.filterButtons}>
+          {Object.keys(filterMap).map((filter) => (
+            <FilterButton
+              key={filter}
+              text={filter}
+              className={selectedFilter === filter ? styles.active : ""}
+              onClick={() => setSelectedFilter(filter)}
+              disabled={isCounting}
             />
-          )}
-
-          <Webcam
-            ref={webcamRef}
-            mirrored={true}
-            videoConstraints={videoConstraints}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              filter: filterMap[selectedFilter],
-            }}
-          />
-
-          {countdown > 0 && (
-            <div className={styles.countdown}>
-              <span>{countdown}</span>
-            </div>
-          )}
+          ))}
         </div>
-      </div>
-
-      <div className={styles.filterButtons}>
-        {Object.keys(filterMap).map((filter) => (
+        <div className={styles.cameraWebCam}>
+          <img src={camera} className={styles.cameraImg} />
           <button
-            key={filter}
-            onClick={() => setSelectedFilter(filter)}
-            disabled={isCounting}
-            className={selectedFilter === filter ? styles.active : ""}
+            type="button"
+            className={styles.captureBtn}
+            onClick={startCountdown}
+            disabled={isCounting || images.length >= MAX_PHOTOS}
           >
-            {filter}
+            Click
           </button>
-        ))}
+          <div className={styles.webCamFrame}>
+            {type === "white" &&
+              images.length < MAX_PHOTOS &&
+              frames?.[images.length] && (
+                <img
+                  src={frames[images.length]}
+                  alt={`Frame ${images.length}`}
+                  className={styles.frameImg}
+                />
+              )}
+            <Webcam
+              ref={webcamRef}
+              mirrored={true}
+              videoConstraints={videoConstraints}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                filter: filterMap[selectedFilter],
+              }}
+            />
+
+            {countdown > 0 && (
+              <div className={styles.countdown}>
+                <span>{countdown}</span>
+              </div>
+            )}
+          </div>
+        </div>
+        <div>
+          {images.length}/{MAX_PHOTOS}
+        </div>
+        <button onClick={clearAll}>🗑 전체 삭제</button>
+
+        <canvas ref={canvasRef} style={{ display: "none" }} />
       </div>
-
-      <button
-        onClick={startCountdown}
-        disabled={isCounting || images.length >= MAX_PHOTOS}
-      >
-        📸 캡처 ({images.length}/{MAX_PHOTOS})
-      </button>
-      <button onClick={clearAll}>🗑 전체 삭제</button>
-
-      <canvas ref={canvasRef} style={{ display: "none" }} />
-    </>
+    </Container>
   );
 };
 

@@ -1,32 +1,62 @@
 @use "../../assets/styles/mixin.scss" as *;
 @use "../../assets/styles/variables" as *;
 
+.webCamContainer {
+  padding-top: 80px;
+}
+.webCamInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .cameraWebCam {
+  display: inline-flex;
   position: relative;
-  padding-top: 65px;
-  padding-bottom: 80px;
+  width: 60vw;
+  max-width: 750px;
 }
 .cameraImg {
-  width: 750px;
-  position: absolute;
-  z-index: 12;
+  width: 60vw;
+  max-width: 750px;
+  position: relative;
+  z-index: 10;
   top: 0;
   left: 0;
 }
+.captureBtn {
+  position: absolute;
+  bottom: 20%;
+  right: 12.5%;
+  z-index: 11;
+  background-color: #d9d9d9;
+  width: 8vw;
+  height: 8vw;
+  border-radius: 50%;
+  @include font-style($font-eng-textCmp, clamp(15px, 4vw, 50px), 700, #222);
+  @media (min-width: 1252px) {
+    width: 101px;
+    height: 101px;
+  }
+}
 .webCamFrame {
-  position: relative;
-  width: 521px;
-  height: 317px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  padding: 12% 35% 6% 7%;
+  @media (min-width: 1252px) {
+    padding: 88px 260px 44px 46px;
+  }
   .frameImg {
     position: absolute;
-    z-index: 10;
+    z-index: 9;
   }
   .countdown {
     position: absolute;
-    @include font-style($font-title, 70px, 700, #fff);
+    @include font-style($font-normal, clamp(20px, 5vw, 70px), 700, #fff);
     font-style: italic;
-    top: 50%;
-    left: 50%;
+    top: 55%;
+    left: 36%;
     transform: translate(-50%, -50%);
     opacity: 0.6;
   }

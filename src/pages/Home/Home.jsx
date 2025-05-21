@@ -20,6 +20,19 @@ const Home = () => {
     localStorage.removeItem("filteredImages");
   }, []);
 
+  useEffect(() => {
+    const handleClick = (event) => {
+      console.log("Clicked element:", event.target);
+    };
+
+    document.addEventListener("click", handleClick);
+
+    // 컴포넌트 언마운트 시 리스너 제거
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   return (
     <Container
       className={classNames(
@@ -68,10 +81,10 @@ const Home = () => {
           <div className={styles.imgWrap}>
             <img src={shin01} className={styles.mainImg} alt="home image" />
             <div className={styles.birth}></div>
-            <button type="button" className={styles.goBtn} onClick={goToSelect}>
-              <span>GO</span>
-            </button>
           </div>
+          <button type="button" className={styles.goBtn} onClick={goToSelect}>
+            <span>GO</span>
+          </button>
         </div>
       </div>
     </Container>
