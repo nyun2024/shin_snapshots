@@ -6,6 +6,7 @@ import { frameImages } from "@constants/frameImages.js";
 import camera from "@img/camera.png";
 import Container from "@components/common/Container";
 import FilterButton from "../../components/button/FilterButton";
+import classNames from "classnames";
 
 const MAX_PHOTOS = 4;
 const STORAGE_KEY = "filteredImages";
@@ -32,6 +33,7 @@ const WebCam = () => {
   const { type } = useParams();
   const frames = frameImages[type];
   const navigate = useNavigate();
+  const [isMobileOnly, setIsMobileOnly] = useState(false);
 
   const [images, setImages] = useState([]);
   const [countdown, setCountdown] = useState(0);
@@ -50,6 +52,17 @@ const WebCam = () => {
         console.error("Failed to parse stored images:", e);
       }
     }
+
+    // 모바일 감지(테블릿 제외)
+    const ua = navigator.userAgent.toLowerCase();
+    const isTablet =
+      /ipad/.test(ua) ||
+      (/(android)/.test(ua) && !/mobile/.test(ua)) ||
+      (window.innerWidth >= 768 && window.innerWidth <= 1024);
+
+    const isMobile = /iphone|ipod|android.*mobile|windows phone/.test(ua);
+
+    setIsMobileOnly(isMobile && !isTablet);
   }, []);
 
   useEffect(() => {
@@ -302,7 +315,13 @@ const WebCam = () => {
   };
 
   return (
-    <Container className={styles.webCamContainer}>
+    <Container
+      className={classNames(
+        styles.webCamContainer,
+        isMobileOnly && styles.isMobileOnly
+      )}
+      isWebCam={isMobileOnly}
+    >
       <div className={styles.webCamInner}>
         <div className={styles.filterButtons}>
           {Object.keys(filterMap).map((filter) => (
@@ -312,6 +331,7 @@ const WebCam = () => {
               className={selectedFilter === filter ? styles.active : ""}
               onClick={() => setSelectedFilter(filter)}
               disabled={isCounting}
+              isMobileOnly={isMobileOnly}
             />
           ))}
         </div>

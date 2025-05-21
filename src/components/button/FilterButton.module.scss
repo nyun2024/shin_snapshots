@@ -13,4 +13,12 @@
     opacity: 0.5;
     cursor: default;
   }
+  &.isMobileOnly {
+    height: 32px;
+    padding: 0 14px;
+    font-size: 16px;
+    & + .filterBtn {
+      margin-left: 9px;
+    }
+  }
 }

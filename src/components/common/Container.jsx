@@ -3,18 +3,19 @@ import classNames from "classnames";
 import styles from "./Container.module.scss";
 import Header from "./Header";
 
-const Container = ({ children, className, isHome }) => {
+const Container = ({ children, className, isHome, isWebCam }) => {
   const isMobile = useIsMobile();
 
   return (
     <div
       className={classNames(
         isMobile ? styles.mobile : styles.pc,
+        isWebCam && styles.isWebCam,
         styles.container,
         isHome && styles.isHome
       )}
     >
-      <Header />
+      {!isWebCam && <Header />}
       <div className={classNames(styles.contents, className)}>{children}</div>
     </div>
   );
