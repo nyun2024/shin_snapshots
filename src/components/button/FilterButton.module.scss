@@ -14,11 +14,13 @@
     cursor: default;
   }
   &.isMobileOnly {
-    height: 32px;
-    padding: 0 14px;
-    font-size: 16px;
+    min-width: 80px;
+    height: 30px;
+    padding: 0 12px;
+    font-size: 14px;
+    margin-bottom: 8px;
     & + .filterBtn {
-      margin-left: 9px;
+      margin-left: 0;
     }
   }
 }

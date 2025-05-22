@@ -321,8 +321,8 @@ const WebCam = () => {
     if (containerRef.current) {
       const parentHeight = containerRef.current.offsetHeight;
       const parentWidth = containerRef.current.offsetWidth;
-      const widthWithMargin = parentHeight * 0.69; // 100% - 18% = 82%
-      const heightWithMargin = parentWidth * 0.58; // 100% - 18% = 82%
+      const widthWithMargin = parentHeight * 0.835; // 100% - 18% = 82%
+      const heightWithMargin = parentWidth * 0.63; // 100% - 18% = 82%
       setAdjustedWidth(widthWithMargin);
       setAdjustedHeight(heightWithMargin);
     }
@@ -349,66 +349,70 @@ const WebCam = () => {
             />
           ))}
         </div>
-        <div className={styles.cameraWebCam}>
-          <img src={camera} className={styles.cameraImg} />
-          <button
-            type="button"
-            className={styles.captureBtn}
-            onClick={startCountdown}
-            disabled={isCounting || images.length >= MAX_PHOTOS}
-          >
-            Click
-          </button>
-          <div className={styles.webCamFrame} ref={containerRef}>
-            {type === "white" &&
-              images.length < MAX_PHOTOS &&
-              frames?.[images.length] && (
-                <img
-                  src={frames[images.length]}
-                  alt={`Frame ${images.length}`}
-                  className={styles.frameImg}
+        <div className={styles.cameraWebCamWrap}>
+          <div className={styles.cameraWebCam}>
+            <img src={camera} className={styles.cameraImg} />
+            <button
+              type="button"
+              className={styles.captureBtn}
+              onClick={startCountdown}
+              disabled={isCounting || images.length >= MAX_PHOTOS}
+            >
+              Click
+            </button>
+            <div className={styles.webCamFrame} ref={containerRef}>
+              {type === "white" &&
+                images.length < MAX_PHOTOS &&
+                frames?.[images.length] && (
+                  <img
+                    src={frames[images.length]}
+                    alt={`Frame ${images.length}`}
+                    className={styles.frameImg}
+                  />
+                )}
+              <div className={styles.webCamVideo}>
+                <Webcam
+                  ref={webcamRef}
+                  mirrored={true}
+                  videoConstraints={videoConstraints}
+                  style={
+                    isMobileOnly
+                      ? {
+                          width: adjustedWidth + "px", // 부모의 높이를 너비에 적용
+                          height: adjustedHeight + "px",
+                          transform: "rotate(-90deg)",
+                          transformOrigin: "center center",
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          translate: "-50% -50%",
+                          objectFit: "cover",
+                          filter: filterMap[selectedFilter],
+                        }
+                      : {
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          filter: filterMap[selectedFilter],
+                        }
+                  }
                 />
-              )}
-            <div className={styles.webCamVideo}>
-              <Webcam
-                ref={webcamRef}
-                mirrored={true}
-                videoConstraints={videoConstraints}
-                style={
-                  isMobileOnly
-                    ? {
-                        width: adjustedWidth + "px", // 부모의 높이를 너비에 적용
-                        height: adjustedHeight + "px",
-                        transform: "rotate(-90deg)",
-                        transformOrigin: "center center",
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        translate: "-50% -50%",
-                        objectFit: "cover",
-                        filter: filterMap[selectedFilter],
-                      }
-                    : {
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        filter: filterMap[selectedFilter],
-                      }
-                }
-              />
-            </div>
-
-            {countdown > 0 && (
-              <div className={styles.countdown}>
-                <span>{countdown}</span>
               </div>
-            )}
+
+              {countdown > 0 && (
+                <div className={styles.countdown}>
+                  <span>{countdown}</span>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className={styles.webCamEtc}>
+            <div>
+              {images.length}/{MAX_PHOTOS}
+            </div>
+            <button onClick={clearAll}>🗑 전체 삭제</button>
           </div>
         </div>
-        <div>
-          {images.length}/{MAX_PHOTOS}
-        </div>
-        <button onClick={clearAll}>🗑 전체 삭제</button>
 
         <canvas ref={canvasRef} style={{ display: "none" }} />
       </div>
