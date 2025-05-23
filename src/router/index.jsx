@@ -1,8 +1,7 @@
 import { createHashRouter } from "react-router-dom";
 import Home from "@pages/Home/Home";
 import WebCam from "@pages/Snapshot/WebCam";
-import EditSnapshot from "@pages/EditSnapshot/EditSnapshot";
-import SaveSnapshot from "@pages/SaveSnapshot/SaveSnapshot";
+import SaveEditSnapshot from "@pages/SaveEditSnapshot/SaveEditSnapshot";
 import SelectFrame from "@pages/SelectFrame/SelectFrame";
 
 const router = createHashRouter(
@@ -20,12 +19,8 @@ const router = createHashRouter(
       element: <WebCam />,
     },
     {
-      path: "/edit/:type",
-      element: <EditSnapshot />,
-    },
-    {
       path: "/save/:type",
-      element: <SaveSnapshot />,
+      element: <SaveEditSnapshot />,
     },
   ],
   { basename: "/" }

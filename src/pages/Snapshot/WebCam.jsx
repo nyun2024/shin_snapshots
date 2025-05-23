@@ -5,7 +5,8 @@ import styles from "./WebCam.module.scss";
 import { frameImages } from "@constants/frameImages.js";
 import camera from "@img/camera.png";
 import Container from "@components/common/Container";
-import FilterButton from "../../components/button/FilterButton";
+import FilterButton from "@components/button/FilterButton";
+import useIsMobile from "@utils/useIsMobile";
 import classNames from "classnames";
 
 const MAX_PHOTOS = 4;
@@ -31,13 +32,13 @@ const WebCam = () => {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const { type } = useParams();
+  const isMobile = useIsMobile();
   const frames = frameImages[type];
   const navigate = useNavigate();
   const [isMobileOnly, setIsMobileOnly] = useState(false);
   const containerRef = useRef(null);
   const [adjustedWidth, setAdjustedWidth] = useState(0);
   const [adjustedHeight, setAdjustedHeight] = useState(0);
-
   const [images, setImages] = useState([]);
   const [countdown, setCountdown] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
@@ -71,7 +72,7 @@ const WebCam = () => {
   useEffect(() => {
     if (images.length >= MAX_PHOTOS) {
       const timer = setTimeout(() => {
-        navigate(`/edit/${type}`);
+        navigate(`/save/${type}`);
       }, 500);
       return () => clearTimeout(timer);
     }
@@ -375,6 +376,7 @@ const WebCam = () => {
     <Container
       className={classNames(
         styles.webCamContainer,
+        isMobile ? styles.mobile : styles.pc,
         isMobileOnly && styles.isMobileOnly
       )}
       isWebCam={isMobileOnly}
@@ -452,7 +454,7 @@ const WebCam = () => {
           </div>
           <div className={styles.webCamEtc}>
             <div className={styles.photoLength}>
-              {images.length}/{MAX_PHOTOS}
+              {images.length} / {MAX_PHOTOS}
             </div>
             <button onClick={clearAll}>🗑️ All Clear</button>
           </div>

@@ -1,17 +1,18 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { resultFrame } from "@constants/frameImages.js";
-import styles from "./EditSnapshot.module.scss";
+import styles from "./SaveEditSnapshot.module.scss";
 import html2canvas from "html2canvas";
 import Container from "@components/common/Container";
 import useIsMobile from "@utils/useIsMobile";
 import classNames from "classnames";
 
-const EditSnapshot = () => {
+const SaveEditSnapshot = () => {
   const [images, setImages] = useState([]);
   const [congratulationText, setCongratulationText] = useState(
     "Happy Birthday\nAsakura Shin"
   );
+  const [isMobileOnly, setIsMobileOnly] = useState(false);
   const resultRef = useRef();
   const { type } = useParams();
   const frame = resultFrame[type];
@@ -30,12 +31,27 @@ const EditSnapshot = () => {
         console.error("Failed to parse stored images:", e);
       }
     }
+
+    // 모바일 감지(테블릿 제외)
+    const ua = navigator.userAgent.toLowerCase();
+    const isTablet =
+      /ipad/.test(ua) ||
+      (/(android)/.test(ua) && !/mobile/.test(ua)) ||
+      (window.innerWidth >= 768 && window.innerWidth <= 1024);
+
+    const isMobile = /iphone|ipod|android.*mobile|windows phone/.test(ua);
+
+    setIsMobileOnly(isMobile && !isTablet);
   }, []);
+
+  const goToSelect = () => {
+    navigate("/select");
+  };
 
   const handleCongText = (e) => {
     const newText = e.target.value;
 
-    // 현재보다 짧아지거나, 20자 이내면 허용
+    // 현재보다 짧아지거나, 25자 이내면 허용
     if (newText.length <= 25 || newText.length < congratulationText.length) {
       setCongratulationText(newText);
     }
@@ -83,7 +99,8 @@ const EditSnapshot = () => {
     <Container
       className={classNames(
         styles.EditSaveContainer,
-        isMobile ? styles.mobile : styles.pc
+        isMobile ? styles.mobile : styles.pc,
+        isMobileOnly && styles.isMobileOnly
       )}
     >
       <div className={styles.resultFrameWrap} ref={resultRef}>
@@ -109,23 +126,32 @@ const EditSnapshot = () => {
       </div>
       <div className={styles.editSaveEtc}>
         <div className={styles.textAreaWrap}>
-          <div>* 프레임 하단 문구 (20자 제한)</div>
+          <div>* 프레임 하단 문구 (25자 제한)</div>
           <textarea
             value={congratulationText}
             onChange={handleCongText}
             placeholder="문구를 입력해주세요."
           />
         </div>
-        <button
-          type="button"
-          className={styles.downloadBtn}
-          onClick={downloadImage}
-        >
-          다운로드
-        </button>
+        <div className={styles.buttonContainer}>
+          <button
+            type="button"
+            className={classNames(styles.downloadBtn, styles.etcButton)}
+            onClick={downloadImage}
+          >
+            다운로드
+          </button>
+          <button
+            type="button"
+            className={classNames(styles.replayBtn, styles.etcButton)}
+            onClick={goToSelect}
+          >
+            재촬영 하기
+          </button>
+        </div>
       </div>
     </Container>
   );
 };
 
-export default EditSnapshot;
+export default SaveEditSnapshot;

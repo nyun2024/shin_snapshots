@@ -8,8 +8,7 @@
   padding: 0 14px;
   border-radius: 17px;
   font-size: 17px;
-  margin-bottom: 6px;
-
+  margin-bottom: 10px;
   & + .filterBtn {
     margin-left: 12px;
   }
@@ -18,13 +17,13 @@
     cursor: default;
   }
   &.isMobileOnly {
-    width: 80px;
+    min-width: 85px;
     height: 30px;
     padding: 0 12px;
     font-size: 14px;
+    margin-bottom: 14px;
     & + .filterBtn {
       margin-left: 0;
-      margin-top: 6px;
     }
   }
   &.selected {

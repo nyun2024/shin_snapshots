@@ -2,151 +2,27 @@
 @use "../../assets/styles/variables" as *;
 
 .webCamContainer {
-  min-height: calc(100dvh - 50px);
+  min-height: calc(100dvh - 46px);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 60px 0 50px;
-}
-.webCamInner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-.cameraWebCam {
-  display: inline-flex;
-  position: relative;
-  width: 60vw;
-  max-width: 750px;
-}
-.cameraImg {
-  width: 60vw;
-  max-width: 750px;
-  position: relative;
-  z-index: 10;
-  top: 0;
-  left: 0;
-}
-.captureBtn {
-  position: absolute;
-  bottom: 17%;
-  right: 8.5%;
-  z-index: 11;
-  background-color: #d9d9d9;
-  width: 9.2vw;
-  height: 9.2vw;
-  border-radius: 50%;
-  @include font-style($font-eng-textCmp, clamp(15px, 4vw, 50px), 700, #222);
-  @media (min-width: 1252px) {
-    width: 115px;
-    height: 115px;
-  }
-}
-.webCamFrame {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  padding: 12% 30% 4.5% 7%;
-  @media (min-width: 1252px) {
-    padding: 88px 225px 34px 50px;
-  }
-  .frameImg {
-    position: absolute;
-    z-index: 9;
-  }
-  .countdown {
-    position: absolute;
-    @include font-style($font-normal, clamp(20px, 5vw, 70px), 700, #fff);
-    font-style: italic;
-    top: 55%;
-    left: 36%;
-    transform: translate(-50%, -50%);
-    opacity: 0.6;
-  }
-}
-.webCamVideo {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-.filterButtons {
-  padding-bottom: 18px;
-}
-.webCamEtc {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 7px;
-  .photoLength {
-    font-size: 16px;
-    margin-right: 16px;
-  }
-  button {
-    height: 28px;
-    padding: 5px 10px;
-    @include font-style($font-normal-700, 14px, 400, #222);
-    background-color: #fff;
-    display: inline-flex;
-    align-items: center;
-    border-radius: 5px;
-  }
-}
-
-.webCamContainer.isMobileOnly {
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  min-height: unset;
-  position: fixed;
-  top: 0;
-  left: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-  z-index: 9999;
-  display: block;
   .webCamInner {
-    transform: translate(0, -100vw) rotate(90deg);
-    transform-origin: left bottom;
-    width: 100dvh;
-    height: 100vw;
-    min-width: 600px;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 16px;
-    padding: 0 20px;
-  }
-  .filterButtons {
-    width: auto;
-    height: 100%;
-    max-width: 80px;
-    overflow-y: auto;
-    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding-bottom: 0;
-  }
-  .cameraWebCamWrap {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
   }
   .cameraWebCam {
     display: inline-flex;
     position: relative;
-    width: 95dvh;
-    max-width: 440px;
+    width: 60vw;
+    max-width: 750px;
+    min-width: 400px;
   }
   .cameraImg {
-    width: 95dvh;
-    max-width: 440px;
+    width: 60vw;
+    max-width: 750px;
+    min-width: 400px;
     position: relative;
     z-index: 10;
     top: 0;
@@ -154,20 +30,170 @@
   }
   .captureBtn {
     position: absolute;
-    bottom: 17.5%;
-    right: 8.8%;
+    bottom: 17%;
+    right: 8.5%;
     z-index: 11;
     background-color: #d9d9d9;
-    width: 14.3dvh;
-    height: 14.3dvh;
-    max-width: 66px;
-    max-height: 66px;
+    width: 9.2vw;
+    height: 9.2vw;
+    min-width: 60px;
+    min-height: 60px;
     border-radius: 50%;
-    @include font-style(
-      $font-eng-textCmp,
-      clamp(27px, 3.4dvh, 30px),
-      700,
-      #222
-    );
+    @include font-style($font-eng-textCmp, clamp(25px, 4vw, 50px), 700, #222);
+    @media (min-width: 1252px) {
+      width: 115px;
+      height: 115px;
+    }
+  }
+  .webCamFrame {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    padding: 12% 30% 4.5% 7%;
+    @media (min-width: 1252px) {
+      padding: 88px 225px 34px 50px;
+    }
+    .frameImg {
+      position: absolute;
+      z-index: 9;
+    }
+    .countdown {
+      position: absolute;
+      @include font-style($font-normal, clamp(30px, 5.5vw, 70px), 700, #fff);
+      font-style: italic;
+      top: 55%;
+      left: 36%;
+      transform: translate(-50%, -50%);
+      opacity: 0.6;
+    }
+  }
+  .webCamVideo {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  .filterButtons {
+    padding-bottom: 15px;
+  }
+  .webCamEtc {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 20px;
+    margin-right: 5%;
+    .photoLength {
+      font-size: 20px;
+      margin-right: 30px;
+    }
+    button {
+      height: 40px;
+      padding: 5px 16px;
+      @include font-style($font-normal-700, 18px, 400, #222);
+      background-color: #fff;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 5px;
+    }
+  }
+  &.mobile.isMobileOnly {
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    min-height: unset;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 9999;
+    display: block;
+    .webCamInner {
+      transform: translate(0, -100vw) rotate(90deg);
+      transform-origin: left bottom;
+      width: 100dvh;
+      height: 100vw;
+      min-width: 600px;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 16px;
+      padding: 0 20px;
+    }
+    .filterButtons {
+      width: auto;
+      height: 100%;
+      min-width: 85px;
+      overflow-y: auto;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-bottom: 0;
+    }
+    .webCamFrame {
+      .countdown {
+        @include font-style($font-normal, clamp(40px, 6.3dvh, 50px), 700, #fff);
+      }
+    }
+    .cameraWebCamWrap {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .cameraWebCam {
+      display: inline-flex;
+      position: relative;
+      width: 95dvh;
+      max-width: 440px;
+      min-width: unset;
+    }
+    .cameraImg {
+      width: 95dvh;
+      max-width: 440px;
+      min-width: unset;
+      position: relative;
+      z-index: 10;
+      top: 0;
+      left: 0;
+    }
+    .captureBtn {
+      position: absolute;
+      bottom: 17.5%;
+      right: 8.8%;
+      z-index: 11;
+      background-color: #d9d9d9;
+      width: 14.3dvh;
+      height: 14.3dvh;
+      max-width: 66px;
+      max-height: 66px;
+      min-width: unset;
+      min-height: unset;
+      border-radius: 50%;
+      @include font-style(
+        $font-eng-textCmp,
+        clamp(27px, 3.4dvh, 30px),
+        700,
+        #222
+      );
+    }
+    .webCamEtc {
+      margin-top: 7px;
+      justify-content: center;
+      .photoLength {
+        font-size: 16px;
+        margin-right: 16px;
+      }
+      button {
+        height: 28px;
+        padding: 5px 10px;
+        @include font-style($font-normal-700, 14px, 400, #222);
+      }
+    }
   }
 }

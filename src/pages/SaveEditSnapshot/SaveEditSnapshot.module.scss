@@ -46,7 +46,7 @@
       margin-bottom: 10px;
     }
     textarea {
-      width: 295px;
+      width: 300px;
       height: 120px;
       @include font-style($font-normal, 17px, 400, #222);
       border-radius: 3px;
@@ -54,29 +54,71 @@
       padding: 10px;
     }
   }
-  .downloadBtn {
-    width: 180px;
-    height: 50px;
-    background-color: #222;
-    @include font-style($font-normal, 19px, 700, #fff);
-    border-radius: 8px;
-    margin: 48px 0 20px;
+  .editSaveEtc {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 300px;
+  }
+  .buttonContainer {
+    display: flex;
+    .etcButton {
+      width: 50%;
+      @include font-style($font-normal, 17px, 700, #fff);
+      border-radius: 8px;
+    }
+    .downloadBtn {
+      background-color: #222;
+      font-weight: 400;
+    }
+    .replayBtn {
+      background-color: #ccc;
+      color: #222;
+    }
   }
 
   &.mobile {
-    padding: 50px 0;
+    padding: 50px 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     .resultFrameWrap {
       width: 300px;
     }
     .capturedImgWrap {
       padding: 36px 25px 0 25px;
-      gap: 26px;
+      gap: 24px;
+    }
+    &.isMobileOnly {
+      .capturedImgWrap {
+        padding: 36px 25px 0 25px;
+        gap: 26px;
+      }
     }
     .congratulationText {
-      height: 185px;
-      @include font-style($font-hand, 41px, 400, #fff);
-      line-height: 46px;
-      padding: 33px 40px 30px;
+      height: 163px;
+      padding: 26px 40px 26px;
+      span {
+        @include font-style($font-hand, 36px, 400, #fff);
+        line-height: 42px;
+      }
+    }
+    .textAreaWrap {
+      div {
+        margin: 20px 0 10px;
+      }
+      textarea {
+        width: 300px;
+        height: 120px;
+      }
+    }
+    .buttonContainer {
+      gap: 16px;
+      .etcButton {
+        height: 48px;
+        margin: 35px auto 0;
+      }
     }
   }
   &.pc {
@@ -84,7 +126,7 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    gap: 60px;
+    gap: 50px;
     .resultFrameWrap {
       width: 350px;
     }
@@ -97,6 +139,14 @@
       @include font-style($font-hand, 41px, 400, #fff);
       line-height: 46px;
       padding: 33px 40px 30px;
+    }
+    .buttonContainer {
+      gap: 12px;
+      .etcButton {
+        height: 50px;
+        font-size: 18px;
+        margin: 20px auto 20px;
+      }
     }
   }
 }
