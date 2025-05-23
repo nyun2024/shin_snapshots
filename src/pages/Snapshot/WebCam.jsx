@@ -123,15 +123,50 @@ const WebCam = () => {
       sy = (vh - sHeight) / 2;
     }
 
-    ctx.save();
-    ctx.translate(cw, 0); // mirror
-    ctx.scale(-1, 1);
     if (isMobileOnly) {
-      ctx.drawImage(video, sx, sy, sHeight, sWidth, 0, 0, cw, ch);
+      // 캔버스를 세로 기준으로 90도 회전
+      canvas.width = video.clientHeight;
+      canvas.height = video.clientWidth;
+
+      ctx.save();
+      ctx.translate(canvas.width / 2, canvas.height / 2); // 중심 이동
+      ctx.rotate(-Math.PI / 2); // 90도 회전
+
+      // 미러 효과 및 그리기 (수정된 방향으로)
+      ctx.scale(-1, 1);
+      ctx.drawImage(
+        video,
+        sx,
+        sy,
+        sWidth,
+        sHeight,
+        -video.clientWidth / 2,
+        -video.clientHeight / 2,
+        video.clientWidth,
+        video.clientHeight
+      );
+      ctx.restore();
     } else {
-      ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, cw, ch);
+      // 기존 데스크탑 및 태블릿용 처리
+      canvas.width = video.clientWidth;
+      canvas.height = video.clientHeight;
+
+      ctx.save();
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(
+        video,
+        sx,
+        sy,
+        sWidth,
+        sHeight,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+      );
+      ctx.restore();
     }
-    ctx.restore();
 
     const imageData = ctx.getImageData(0, 0, cw, ch);
     const data = imageData.data;
