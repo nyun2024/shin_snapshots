@@ -124,14 +124,13 @@ const WebCam = () => {
     }
 
     ctx.save();
-
-    if (!isMobileOnly) {
-      ctx.translate(cw, 0);
-      ctx.scale(-1, 1);
+    ctx.translate(cw, 0); // mirror
+    ctx.scale(-1, 1);
+    if (isMobileOnly) {
+      ctx.drawImage(video, sx, sy, sHeight, sWidth, 0, 0, cw, ch);
+    } else {
+      ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, cw, ch);
     }
-
-    ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, cw, ch);
-
     ctx.restore();
 
     const imageData = ctx.getImageData(0, 0, cw, ch);
