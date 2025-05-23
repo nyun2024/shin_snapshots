@@ -64,6 +64,20 @@
   }
 
   &.mobile {
+    padding: 50px 0;
+    .resultFrameWrap {
+      width: 300px;
+    }
+    .capturedImgWrap {
+      padding: 36px 25px 0 25px;
+      gap: 26px;
+    }
+    .congratulationText {
+      height: 185px;
+      @include font-style($font-hand, 41px, 400, #fff);
+      line-height: 46px;
+      padding: 33px 40px 30px;
+    }
   }
   &.pc {
     padding: 50px 0;

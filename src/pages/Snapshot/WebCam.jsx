@@ -168,7 +168,7 @@ const WebCam = () => {
       ctx.restore();
     }
 
-    const imageData = ctx.getImageData(0, 0, cw, ch);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
 
     switch (selectedFilter) {
