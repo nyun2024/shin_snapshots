@@ -386,9 +386,10 @@ const WebCam = () => {
               key={filter}
               text={filter}
               className={selectedFilter === filter ? styles.active : ""}
-              onClick={() => setSelectedFilter(filter)}
               disabled={isCounting}
               isMobileOnly={isMobileOnly}
+              onClick={() => setSelectedFilter(filter)}
+              isSelected={selectedFilter === filter}
             />
           ))}
         </div>

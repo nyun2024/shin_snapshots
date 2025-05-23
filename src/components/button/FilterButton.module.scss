@@ -1,11 +1,15 @@
+@use "../../assets/styles/mixin.scss" as *;
+@use "../../assets/styles/variables" as *;
+
 .filterBtn {
   height: 36px;
   color: #fff;
   border: 1px solid #fff;
-  padding: 0 16px;
+  padding: 0 14px;
   border-radius: 17px;
   font-size: 17px;
-  margin-bottom: 18px;
+  margin-bottom: 6px;
+
   & + .filterBtn {
     margin-left: 12px;
   }
@@ -18,9 +22,14 @@
     height: 30px;
     padding: 0 12px;
     font-size: 14px;
-    margin-bottom: 8px;
     & + .filterBtn {
       margin-left: 0;
+      margin-top: 6px;
     }
+  }
+  &.selected {
+    background-color: #fff;
+    color: $blue;
+    font-weight: 700;
   }
 }
