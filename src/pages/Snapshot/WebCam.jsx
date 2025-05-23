@@ -124,9 +124,14 @@ const WebCam = () => {
     }
 
     ctx.save();
-    ctx.translate(cw, 0); // mirror
-    ctx.scale(-1, 1);
+
+    if (!isMobileOnly) {
+      ctx.translate(cw, 0);
+      ctx.scale(-1, 1);
+    }
+
     ctx.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, cw, ch);
+
     ctx.restore();
 
     const imageData = ctx.getImageData(0, 0, cw, ch);
@@ -318,14 +323,18 @@ const WebCam = () => {
   };
 
   useEffect(() => {
-    if (containerRef.current) {
-      const parentHeight = containerRef.current.offsetHeight;
-      const parentWidth = containerRef.current.offsetWidth;
-      const widthWithMargin = parentHeight * 0.835; // 100% - 18% = 82%
-      const heightWithMargin = parentWidth * 0.63; // 100% - 18% = 82%
-      setAdjustedWidth(widthWithMargin);
-      setAdjustedHeight(heightWithMargin);
-    }
+    const timer = setTimeout(() => {
+      if (containerRef.current) {
+        const parentHeight = containerRef.current.offsetHeight;
+        const parentWidth = containerRef.current.offsetWidth;
+        const widthWithMargin = parentHeight * 0.835;
+        const heightWithMargin = parentWidth * 0.63;
+        setAdjustedWidth(widthWithMargin);
+        setAdjustedHeight(heightWithMargin);
+      }
+    }, 100); // 100~200ms 사이로 조정 가능
+
+    return () => clearTimeout(timer);
   }, [isMobileOnly]);
 
   return (
@@ -407,10 +416,10 @@ const WebCam = () => {
             </div>
           </div>
           <div className={styles.webCamEtc}>
-            <div>
+            <div className={styles.photoLength}>
               {images.length}/{MAX_PHOTOS}
             </div>
-            <button onClick={clearAll}>🗑 전체 삭제</button>
+            <button onClick={clearAll}>🗑️ All Clear</button>
           </div>
         </div>
 
