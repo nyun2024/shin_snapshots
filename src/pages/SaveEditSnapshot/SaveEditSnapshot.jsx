@@ -78,7 +78,7 @@ const SaveEditSnapshot = () => {
         const newTab = window.open();
         if (newTab) {
           newTab.document.body.innerHTML = `
-          <p style="text-align: center; font-family: sans-serif; font-size: 24px;">길게 눌러 이미지를 저장하세요</p>
+          <p style="text-align: center; font-family: sans-serif; font-size: 36px; margin: 20px 0 16px;">길게 눌러 이미지를 저장하세요</p>
           <img src="${dataURL}" alt="snapshot" style="width: 100%;" />
         `;
         } else {
