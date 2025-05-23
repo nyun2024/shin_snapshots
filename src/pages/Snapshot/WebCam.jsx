@@ -361,12 +361,12 @@ const WebCam = () => {
       if (containerRef.current) {
         const parentHeight = containerRef.current.offsetHeight;
         const parentWidth = containerRef.current.offsetWidth;
-        const widthWithMargin = parentHeight * 0.835;
+        const widthWithMargin = parentHeight * 0.72;
         const heightWithMargin = parentWidth * 0.63;
         setAdjustedWidth(widthWithMargin);
         setAdjustedHeight(heightWithMargin);
       }
-    }, 100); // 100~200ms 사이로 조정 가능
+    }, 200); // 100~200ms 사이로 조정 가능
 
     return () => clearTimeout(timer);
   }, [isMobileOnly]);
