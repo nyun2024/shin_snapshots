@@ -407,13 +407,13 @@ const WebCam = () => {
               Click
             </button>
             <div className={styles.webCamFrame} ref={containerRef}>
-              {type === "white" &&
+              {type === "blue" &&
                 images.length < MAX_PHOTOS &&
                 frames?.[images.length] && (
                   <img
                     src={frames[images.length]}
                     alt={`Frame ${images.length}`}
-                    className={styles.frameImg}
+                    className={styles.frameBoxImg}
                   />
                 )}
               <div className={styles.webCamVideo}>

@@ -29,7 +29,7 @@ const SelectFrame = () => {
       <div className={styles.title}>프레임을 선택해 주세요.</div>
       <div className={styles.frameContainer}>
         <FrameTypeButton type="black" onClick={() => goToWebCam("black")} />
-        <FrameTypeButton type="white" onClick={() => goToWebCam("white")} />
+        <FrameTypeButton type="blue" onClick={() => goToWebCam("blue")} />
       </div>
     </Container>
   );
