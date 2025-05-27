@@ -17,6 +17,7 @@ const SelectFrame = () => {
   useEffect(() => {
     // WebCam 이미지 초기화
     localStorage.removeItem("filteredImages");
+    localStorage.setItem("saveEdit", false);
   }, []);
 
   return (

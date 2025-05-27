@@ -43,6 +43,9 @@ const SaveEditSnapshot = () => {
     const isMobile = /iphone|ipod|android.*mobile|windows phone/.test(ua);
 
     setIsMobileOnly(isMobile && !isTablet);
+
+    // 뒤로가시 시 홈으로 이동
+    localStorage.setItem("saveEdit", true);
   }, []);
 
   const goToSelect = () => {

@@ -46,6 +46,7 @@ const WebCam = () => {
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
+
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
@@ -70,11 +71,15 @@ const WebCam = () => {
   }, []);
 
   useEffect(() => {
-    if (images.length >= MAX_PHOTOS) {
+    const isSave = localStorage.getItem("saveEdit");
+    if (images.length >= MAX_PHOTOS && isSave === "false") {
       const timer = setTimeout(() => {
         navigate(`/save/${type}`);
       }, 500);
       return () => clearTimeout(timer);
+    } else if (isSave === "true") {
+      // SaveEdit에서 뒤로가시 시 홈으로 이동
+      navigate("/");
     }
   }, [images, navigate, type]);
 
