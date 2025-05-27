@@ -12,6 +12,7 @@ const SaveEditSnapshot = () => {
   const [congratulationText, setCongratulationText] = useState(
     "Happy Birthday\nAsakura Shin"
   );
+  const [textareaText, setTextareaText] = useState("");
   const [isMobileOnly, setIsMobileOnly] = useState(false);
   const resultRef = useRef();
   const { type } = useParams();
@@ -51,9 +52,14 @@ const SaveEditSnapshot = () => {
   const handleCongText = (e) => {
     const newText = e.target.value;
 
-    // 현재보다 짧아지거나, 25자 이내면 허용
-    if (newText.length <= 25 || newText.length < congratulationText.length) {
+    // 25자 제한
+    if (newText.length <= 25 || newText.length < textareaText.length) {
+      setTextareaText(newText);
       setCongratulationText(newText);
+    }
+    // 입력값이 없으면 생일문구 노출
+    if (newText.length === 0) {
+      setCongratulationText("Happy Birthday\nAsakura Shin");
     }
   };
 
@@ -78,7 +84,7 @@ const SaveEditSnapshot = () => {
         const newTab = window.open();
         if (newTab) {
           newTab.document.body.innerHTML = `
-          <p style="text-align: center; font-family: sans-serif; font-size: 36px; margin: 20px 0 16px;">길게 눌러 이미지를 저장하세요</p>
+          <p style="text-align: center; font-family: sans-serif; font-size: 40px; margin: 20px 0 16px;">길게 눌러 이미지를 저장하세요</p>
           <img src="${dataURL}" alt="snapshot" style="width: 100%;" />
         `;
         } else {
@@ -115,7 +121,12 @@ const SaveEditSnapshot = () => {
             />
           ))}
         </div>
-        <div className={styles.congratulationText}>
+        <div
+          className={classNames(
+            styles.congratulationText,
+            type === "blue" && styles.blueText
+          )}
+        >
           {congratulationText.split("\n").map((line, idx) => (
             <span key={idx}>
               {line}
@@ -128,7 +139,7 @@ const SaveEditSnapshot = () => {
         <div className={styles.textAreaWrap}>
           <div>* 프레임 하단 문구 (25자 제한)</div>
           <textarea
-            value={congratulationText}
+            value={textareaText}
             onChange={handleCongText}
             placeholder="문구를 입력해주세요."
           />

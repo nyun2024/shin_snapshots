@@ -37,7 +37,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    word-break: keep-all;
     white-space: pre-line;
     text-align: center;
   }
@@ -98,10 +97,14 @@
     }
     .congratulationText {
       height: 163px;
-      padding: 26px 40px 26px;
+      padding: 26px 29px 26px;
       span {
         @include font-style($font-hand, 36px, 400, #fff);
         line-height: 42px;
+      }
+      &.blueText {
+        padding-top: 20px;
+        padding-bottom: 40px;
       }
     }
     .textAreaWrap {
@@ -138,7 +141,11 @@
       height: 185px;
       @include font-style($font-hand, 41px, 400, #fff);
       line-height: 46px;
-      padding: 33px 40px 30px;
+      padding: 33px 29px 30px;
+      &.blueText {
+        padding-top: 20px;
+        padding-bottom: 48px;
+      }
     }
     .buttonContainer {
       gap: 12px;
