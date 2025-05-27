@@ -43,6 +43,7 @@ const WebCam = () => {
   const [countdown, setCountdown] = useState(0);
   const [isCounting, setIsCounting] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("no filter");
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -361,6 +362,9 @@ const WebCam = () => {
     setImages([]);
     localStorage.removeItem(STORAGE_KEY);
   };
+  const handleCloseClick = () => {
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -466,6 +470,26 @@ const WebCam = () => {
         </div>
 
         <canvas ref={canvasRef} style={{ display: "none" }} />
+
+        {isMobileOnly && isOpen && (
+          <div className={styles.layerMobile}>
+            <div className={styles.dim} onClick={handleCloseClick}></div>
+            <div className={styles.layerContainer}>
+              <div className={styles.layerContent}>
+                핸드폰을 가로로 돌려
+                <br />
+                촬영해주세요!
+              </div>
+              <button
+                type="button"
+                className={styles.closeBtn}
+                onClick={handleCloseClick}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </Container>
   );
