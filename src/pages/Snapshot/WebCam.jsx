@@ -376,7 +376,7 @@ const WebCam = () => {
         setAdjustedWidth(widthWithMargin);
         setAdjustedHeight(heightWithMargin);
       }
-    }, 200); // 100~200ms 사이로 조정 가능
+    }, 500);
 
     return () => clearTimeout(timer);
   }, [isMobileOnly]);
