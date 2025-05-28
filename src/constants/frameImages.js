@@ -5,6 +5,7 @@ import blue4 from "@img/frame/blue/blue4.png";
 
 import blackFrame from "@img/frame/black/black_frame.png";
 import blueFrame from "@img/frame/blue/blue_frame.png";
+import whiteFrame from "@img/frame/white/white_frame.png";
 
 export const frameImages = {
   blue: [blue1, blue2, blue3, blue4],
@@ -13,4 +14,5 @@ export const frameImages = {
 export const resultFrame = {
   black: blackFrame,
   blue: blueFrame,
+  white: whiteFrame,
 };

@@ -31,6 +31,7 @@ const SelectFrame = () => {
       <div className={styles.frameContainer}>
         <FrameTypeButton type="black" onClick={() => goToWebCam("black")} />
         <FrameTypeButton type="blue" onClick={() => goToWebCam("blue")} />
+        <FrameTypeButton type="white" onClick={() => goToWebCam("white")} />
       </div>
     </Container>
   );

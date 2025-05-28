@@ -124,29 +124,33 @@ const SaveEditSnapshot = () => {
             />
           ))}
         </div>
-        <div
-          className={classNames(
-            styles.congratulationText,
-            type === "blue" && styles.blueText
-          )}
-        >
-          {congratulationText.split("\n").map((line, idx) => (
-            <span key={idx}>
-              {line}
-              <br />
-            </span>
-          ))}
-        </div>
+        {type !== "white" && (
+          <div
+            className={classNames(
+              styles.congratulationText,
+              type === "blue" && styles.blueText
+            )}
+          >
+            {congratulationText.split("\n").map((line, idx) => (
+              <span key={idx}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </div>
+        )}
       </div>
       <div className={styles.editSaveEtc}>
-        <div className={styles.textAreaWrap}>
-          <div>* 프레임 하단 문구 (25자 제한)</div>
-          <textarea
-            value={textareaText}
-            onChange={handleCongText}
-            placeholder="문구를 입력해주세요."
-          />
-        </div>
+        {type !== "white" && (
+          <div className={styles.textAreaWrap}>
+            <div>* 프레임 하단 문구 (25자 제한)</div>
+            <textarea
+              value={textareaText}
+              onChange={handleCongText}
+              placeholder="문구를 입력해주세요."
+            />
+          </div>
+        )}
         <div className={styles.buttonContainer}>
           <button
             type="button"

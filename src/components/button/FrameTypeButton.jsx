@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import black from "@img/frame/black/black_frame.png";
 import blue from "@img/frame/blue/blue_frame.png";
+import white from "@img/frame/white/white_frame.png";
 import useIsMobile from "@utils/useIsMobile";
 import styles from "./FrameTypeButton.module.scss";
 import classNames from "classnames";
@@ -8,6 +9,7 @@ import classNames from "classnames";
 const imgs = {
   black,
   blue,
+  white,
 };
 
 const FrameTypeButton = ({ type, onClick }) => {

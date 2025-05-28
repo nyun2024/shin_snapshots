@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./WebCam.module.scss";
 import { frameImages } from "@constants/frameImages.js";
 import camera from "@img/camera.png";
+import cameraVertical from "@img/camera_vertical.png";
 import Container from "@components/common/Container";
 import FilterButton from "@components/button/FilterButton";
 import useIsMobile from "@utils/useIsMobile";
@@ -69,7 +70,7 @@ const WebCam = () => {
 
     const isMobile = /iphone|ipod|android.*mobile|windows phone/.test(ua);
 
-    setIsMobileOnly(isMobile && !isTablet);
+    setIsMobileOnly(isMobile && !isTablet && type !== "white");
   }, []);
 
   useEffect(() => {
@@ -232,9 +233,19 @@ const WebCam = () => {
             />
           ))}
         </div>
-        <div className={styles.cameraWebCamWrap}>
+        <div
+          className={classNames(
+            type === "white"
+              ? styles.verticalCameraWebCamWrap
+              : styles.horizontalCameraWebCamWrap,
+            styles.cameraWebCamWrap
+          )}
+        >
           <div className={styles.cameraWebCam}>
-            <img src={camera} className={styles.cameraImg} />
+            <img
+              src={type === "white" ? cameraVertical : camera}
+              className={styles.cameraImg}
+            />
             <button
               type="button"
               className={styles.captureBtn}
