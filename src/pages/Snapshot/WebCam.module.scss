@@ -111,17 +111,16 @@
       min-width: 300px;
     }
     .captureBtn {
-      bottom: 17%;
-      right: 8.5%;
-      width: 9.2vw;
-      height: 9.2vw;
-      min-width: 60px;
-      min-height: 60px;
-      @include font-style($font-eng-textCmp, clamp(25px, 4vw, 50px), 700, #222);
-      @media (min-width: 1252px) {
-        width: 115px;
-        height: 115px;
-      }
+      bottom: 27%;
+      right: 5.7%;
+      width: 15vw;
+      height: 15vw;
+      min-width: 75px;
+      min-height: 75px;
+      max-width: 147px;
+      max-height: 147px;
+      background-color: #e3e2e2;
+      @include font-style($font-eng-textCmp, clamp(30px, 6vw, 60px), 700, #222);
     }
     .webCamFrame {
       padding: 19.5% 36.7% 9.5% 10.5%;
