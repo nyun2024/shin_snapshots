@@ -1,9 +1,12 @@
 .frameTypeButton {
-  height: 275px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 278px;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 10px;
   position: relative;
-  text-align: center;
   padding: 17px 16px 24px;
   .frameName {
     font-size: 18px;
@@ -17,10 +20,15 @@
       bottom: 10px;
       right: 10px;
     }
-  }
-  img {
-    width: 100%;
-    max-height: 189px;
+    img {
+      width: 100%;
+      max-width: 59px;
+    }
+    &.white {
+      img {
+        max-width: 130px;
+      }
+    }
   }
   .selectBtn {
     width: 100%;

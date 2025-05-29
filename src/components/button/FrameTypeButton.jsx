@@ -46,7 +46,12 @@ const FrameTypeButton = ({ type, onClick }) => {
         )}
       >
         <div className={styles.frameName}>{type}</div>
-        <div className={styles.imgWrap}>
+        <div
+          className={classNames(
+            styles.imgWrap,
+            type === "white" && styles.white
+          )}
+        >
           {imgSrc && <img src={imgSrc} alt={`${type} icon`} />}
         </div>
         <button
