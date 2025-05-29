@@ -7,12 +7,19 @@
     gap: 20px;
   }
   &.mobile {
+    .frameContainer {
+      gap: 18px 12px;
+      flex-wrap: wrap;
+    }
     .title {
       font-size: 20px;
       padding: 50px 0 30px;
     }
   }
   &.pc {
+    .frameContainer {
+      gap: 18px 21px;
+    }
     .title {
       font-size: 24px;
       padding: 64px 0 48px;
