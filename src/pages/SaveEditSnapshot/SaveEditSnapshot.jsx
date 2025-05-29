@@ -13,7 +13,7 @@ const SaveEditSnapshot = () => {
     "Happy Birthday\nAsakura Shin"
   );
   const [textareaText, setTextareaText] = useState("");
-  const [isMobileOnly, setIsMobileOnly] = useState(false);
+  const [isHorMobileOnly, setisHorMobileOnly] = useState(false);
   const resultRef = useRef();
   const { type } = useParams();
   const frame = resultFrame[type];
@@ -42,7 +42,7 @@ const SaveEditSnapshot = () => {
 
     const isMobile = /iphone|ipod|android.*mobile|windows phone/.test(ua);
 
-    setIsMobileOnly(isMobile && !isTablet);
+    setisHorMobileOnly(isMobile && !isTablet);
 
     // 뒤로가시 시 홈으로 이동
     localStorage.setItem("saveEdit", true);
@@ -109,7 +109,7 @@ const SaveEditSnapshot = () => {
       className={classNames(
         styles.EditSaveContainer,
         isMobile ? styles.mobile : styles.pc,
-        isMobileOnly && styles.isMobileOnly
+        isHorMobileOnly && styles.isHorMobileOnly
       )}
     >
       <div className={styles.resultFrameWrap} ref={resultRef}>

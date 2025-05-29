@@ -7,7 +7,9 @@
   justify-content: center;
   align-items: center;
   padding: 60px 0 50px;
+
   .webCamInner {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -103,12 +105,12 @@
   .verticalCameraWebCamWrap {
     .cameraWebCam {
       max-width: 580px;
-      min-width: 300px;
+      min-width: 310px;
     }
     .cameraImg {
       width: 60vw;
       max-width: 580px;
-      min-width: 300px;
+      min-width: 310px;
     }
     .captureBtn {
       bottom: 27%;
@@ -162,7 +164,26 @@
       border-radius: 5px;
     }
   }
-  &.mobile.isMobileOnly {
+  &.mobile.isVerMobileOnly {
+    .filterButtons {
+      padding: 0 20px 15px 20px;
+      text-align: center;
+    }
+    .webCamEtc {
+      margin-top: 7px;
+      justify-content: center;
+      .photoLength {
+        font-size: 16px;
+        margin-right: 16px;
+      }
+      button {
+        height: 28px;
+        padding: 5px 10px;
+        @include font-style($font-normal-700, 14px, 400, #222);
+      }
+    }
+  }
+  &.mobile.isHorMobileOnly {
     padding: 0;
     width: 100%;
     height: 100%;

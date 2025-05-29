@@ -7,7 +7,8 @@ const FilterButton = ({
   onClick,
   disabled,
   className,
-  isMobileOnly,
+  isHorMobileOnly,
+  isVerMobileOnly,
   isSelected,
 }) => {
   return (
@@ -15,7 +16,8 @@ const FilterButton = ({
       type="button"
       className={classNames(
         styles.filterBtn,
-        isMobileOnly && styles.isMobileOnly,
+        isHorMobileOnly && styles.isHorMobileOnly,
+        isVerMobileOnly && styles.isVerMobileOnly,
         isSelected && styles.selected,
         className
       )}

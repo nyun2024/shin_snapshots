@@ -37,7 +37,8 @@ const WebCam = () => {
   const isMobile = useIsMobile();
   const frames = frameImages[type];
   const navigate = useNavigate();
-  const [isMobileOnly, setIsMobileOnly] = useState(false);
+  const [isHorMobileOnly, setisHorMobileOnly] = useState(false);
+  const [isVerMobileOnly, setisVerMobileOnly] = useState(false);
   const containerRef = useRef(null);
   const [adjustedWidth, setAdjustedWidth] = useState(0);
   const [adjustedHeight, setAdjustedHeight] = useState(0);
@@ -70,7 +71,8 @@ const WebCam = () => {
 
     const isMobile = /iphone|ipod|android.*mobile|windows phone/.test(ua);
 
-    setIsMobileOnly(isMobile && !isTablet && type !== "white");
+    setisHorMobileOnly(isMobile && !isTablet && type !== "white");
+    setisVerMobileOnly(isMobile && !isTablet && type === "white");
   }, []);
 
   useEffect(() => {
@@ -132,7 +134,7 @@ const WebCam = () => {
       sy = (vh - sHeight) / 2;
     }
 
-    if (isMobileOnly) {
+    if (isHorMobileOnly) {
       // 캔버스를 세로 기준으로 90도 회전
       canvas.width = video.clientHeight;
       canvas.height = video.clientWidth;
@@ -141,7 +143,7 @@ const WebCam = () => {
       ctx.translate(canvas.width / 2, canvas.height / 2); // 중심 이동
       ctx.rotate(-Math.PI / 2); // 90도 회전
 
-      // 미러 효과 및 그리기 (수정된 방향으로)
+      // 미러 효과 및 그리기
       ctx.scale(-1, 1);
       ctx.drawImage(
         video,
@@ -208,16 +210,17 @@ const WebCam = () => {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [isMobileOnly]);
+  }, [isHorMobileOnly]);
 
   return (
     <Container
       className={classNames(
         styles.webCamContainer,
         isMobile ? styles.mobile : styles.pc,
-        isMobileOnly && styles.isMobileOnly
+        isHorMobileOnly && styles.isHorMobileOnly,
+        isVerMobileOnly && styles.isVerMobileOnly
       )}
-      isWebCam={isMobileOnly}
+      isWebCam={isHorMobileOnly || isVerMobileOnly}
     >
       <div className={styles.webCamInner}>
         <div className={styles.filterButtons}>
@@ -227,7 +230,8 @@ const WebCam = () => {
               text={filter}
               className={selectedFilter === filter ? styles.active : ""}
               disabled={isCounting}
-              isMobileOnly={isMobileOnly}
+              isHorMobileOnly={isHorMobileOnly}
+              isVerMobileOnly={isVerMobileOnly}
               onClick={() => setSelectedFilter(filter)}
               isSelected={selectedFilter === filter}
             />
@@ -270,7 +274,7 @@ const WebCam = () => {
                   mirrored={true}
                   videoConstraints={videoConstraints}
                   style={
-                    isMobileOnly
+                    isHorMobileOnly
                       ? {
                           width: adjustedWidth + "px", // 부모의 높이를 너비에 적용
                           height: adjustedHeight + "px",
@@ -310,7 +314,7 @@ const WebCam = () => {
 
         <canvas ref={canvasRef} style={{ display: "none" }} />
 
-        {isMobileOnly && isOpen && (
+        {isHorMobileOnly && isOpen && (
           <div className={styles.layerMobile}>
             <div className={styles.dim} onClick={handleCloseClick}></div>
             <div className={styles.layerContainer}>
