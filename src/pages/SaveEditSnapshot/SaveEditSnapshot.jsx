@@ -109,7 +109,8 @@ const SaveEditSnapshot = () => {
       className={classNames(
         styles.EditSaveContainer,
         isMobile ? styles.mobile : styles.pc,
-        isHorMobileOnly && styles.isHorMobileOnly
+        isHorMobileOnly && styles.isHorMobileOnly,
+        type === "white" && styles.white
       )}
     >
       <div className={styles.resultFrameWrap} ref={resultRef}>

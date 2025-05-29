@@ -54,10 +54,11 @@
     }
   }
   .editSaveEtc {
+    width: 100%;
+    max-width: 300px;
     display: flex;
     justify-content: center;
     flex-direction: column;
-    max-width: 300px;
   }
   .buttonContainer {
     display: flex;
@@ -117,10 +118,23 @@
       }
     }
     .buttonContainer {
-      gap: 16px;
+      gap: 12px;
       .etcButton {
-        height: 48px;
+        height: 44px;
+        font-size: 15px;
         margin: 35px auto 0;
+      }
+    }
+    &.white {
+      .capturedImgWrap {
+        padding: 100px 26px 30px 26px;
+        gap: 11px 12px;
+        flex-direction: row;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        img {
+          width: calc(50% - 6px);
+        }
       }
     }
   }
@@ -153,6 +167,21 @@
         height: 50px;
         font-size: 18px;
         margin: 20px auto 20px;
+      }
+    }
+    &.white {
+      .resultFrameWrap {
+        width: 370px;
+      }
+      .capturedImgWrap {
+        padding: 122px 31px 36px 31px;
+        gap: 11px 14px;
+        flex-direction: row;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        img {
+          width: calc(50% - 7px);
+        }
       }
     }
   }
