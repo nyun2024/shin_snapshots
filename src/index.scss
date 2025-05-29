@@ -54,52 +54,11 @@
   font-style: normal;
 }
 @font-face {
-  font-family: "MaruBuri";
-  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.eot);
-  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.eot?#iefix)
-      format("embedded-opentype"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.woff2)
-      format("woff2"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.woff)
-      format("woff"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.ttf)
-      format("truetype");
-}
-@font-face {
-  font-family: "MaruBuriSemiBold";
-  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.eot);
-  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.eot?#iefix)
-      format("embedded-opentype"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.woff2)
-      format("woff2"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.woff)
-      format("woff"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.ttf)
-      format("truetype");
-}
-@font-face {
-  font-family: "MaruBuriBold";
-  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.eot);
-  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.eot?#iefix)
-      format("embedded-opentype"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.woff2)
-      format("woff2"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.woff)
-      format("woff"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.ttf)
-      format("truetype");
-}
-@font-face {
-  font-family: "MaruBuriLight";
-  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Light.eot);
-  src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Light.eot?#iefix)
-      format("embedded-opentype"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Light.woff2)
-      format("woff2"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Light.woff)
-      format("woff"),
-    url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Light.ttf)
-      format("truetype");
+  font-family: "omyu_pretty";
+  src: url("https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 
 // reset
@@ -195,7 +154,7 @@ video {
 
 html,
 body {
-  font-family: "MaruBuri", Helvetica, Dotum, "돋움", Apple SD Gothic Neo,
+  font-family: "omyu_pretty", Helvetica, Dotum, "돋움", Apple SD Gothic Neo,
     sans-serif;
   color: #fff;
   background-color: #006dd7;
@@ -230,7 +189,7 @@ button {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
-  font-family: "MaruBuri", Helvetica, Dotum, "돋움", Apple SD Gothic Neo,
+  font-family: "omyu_pretty", Helvetica, Dotum, "돋움", Apple SD Gothic Neo,
     sans-serif;
 }
 a {
@@ -254,7 +213,7 @@ textarea {
   border: 0;
   padding: 0;
   margin: 0;
-  font-family: "MaruBuri";
+  font-family: "omyu_pretty";
 }
 input:focus,
 input:focus-visible {

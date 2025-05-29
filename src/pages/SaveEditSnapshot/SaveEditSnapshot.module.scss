@@ -66,6 +66,7 @@
       width: 50%;
       @include font-style($font-normal, 17px, 700, #fff);
       border-radius: 8px;
+      letter-spacing: 0.5px;
     }
     .downloadBtn {
       background-color: #222;
@@ -121,7 +122,7 @@
       gap: 12px;
       .etcButton {
         height: 44px;
-        font-size: 15px;
+        font-size: 16px;
         margin: 35px auto 0;
       }
     }
