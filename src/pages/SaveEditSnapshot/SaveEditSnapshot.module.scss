@@ -86,6 +86,7 @@
     flex-direction: column;
     .resultFrameWrap {
       width: 300px;
+      height: 962px;
     }
     .capturedImgWrap {
       padding: 36px 25px 0 25px;
@@ -127,6 +128,10 @@
       }
     }
     &.white {
+      .resultFrameWrap {
+        width: 300px;
+        height: 450px;
+      }
       .capturedImgWrap {
         padding: 100px 25px 29px 25px;
         gap: 9px 11px;
@@ -148,6 +153,7 @@
     gap: 50px;
     .resultFrameWrap {
       width: 350px;
+      height: 1122px;
     }
     .capturedImgWrap {
       padding: 42px 29px 0 29px;
@@ -175,6 +181,7 @@
       gap: 40px;
       .resultFrameWrap {
         width: 370px;
+        height: 555px;
       }
       .capturedImgWrap {
         padding: 122px 31px 36px 31px;
