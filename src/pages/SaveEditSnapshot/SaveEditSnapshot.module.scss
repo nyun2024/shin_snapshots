@@ -127,13 +127,14 @@
     }
     &.white {
       .capturedImgWrap {
-        padding: 100px 26px 30px 26px;
-        gap: 11px 12px;
+        padding: 100px 25px 29px 25px;
+        gap: 9px 11px;
         flex-direction: row;
+        height: 450px;
         align-items: flex-start;
         flex-wrap: wrap;
         img {
-          width: calc(50% - 6px);
+          width: calc(50% - 5.5px);
         }
       }
     }
@@ -170,6 +171,7 @@
       }
     }
     &.white {
+      gap: 40px;
       .resultFrameWrap {
         width: 370px;
       }
@@ -182,6 +184,9 @@
         img {
           width: calc(50% - 7px);
         }
+      }
+      .editSaveEtc {
+        max-width: 290px;
       }
     }
   }
