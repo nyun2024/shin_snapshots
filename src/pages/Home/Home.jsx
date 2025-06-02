@@ -5,13 +5,19 @@ import styles from "./Home.module.scss";
 import Container from "@components/common/Container";
 import classNames from "classnames";
 import shin01 from "@img/home/home_shin01.png";
+import shin02 from "@img/home/home_shin02.png";
+import shin03 from "@img/home/home_shin03.png";
+import shin04 from "@img/home/home_shin04.png";
 import starLine from "@img/home/StarLine.gif";
 import Loading from "@pages/Loading/Loading";
+
+const images = [shin01, shin02, shin03, shin04];
 
 const Home = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
   const [isLoading, setIsLoading] = useState(true);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const goToSelect = () => {
     navigate("/select");
@@ -41,6 +47,17 @@ const Home = () => {
       document.removeEventListener("click", handleClick);
     };
   }, []);
+
+  // main img fade inout 애니메이션
+  useEffect(() => {
+    if (!isLoading) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }, 3600);
+
+      return () => clearInterval(interval);
+    }
+  }, [isLoading]);
 
   return (
     <>
@@ -90,8 +107,23 @@ const Home = () => {
           <div className={styles.homeMainWrap}>
             <img src={starLine} className={styles.starLine} />
             <div className={styles.imgWrap}>
-              <img src={shin01} className={styles.mainImg} alt="home image" />
+              <div className={styles.imgInnerWrap}>
+                {images.map((src, index) => (
+                  <img
+                    key={index}
+                    src={src}
+                    className={classNames(styles.mainImg, {
+                      [styles.visible]: index === currentImageIndex,
+                    })}
+                    alt={`home image ${index + 1}`}
+                  />
+                ))}
+                <img src={shin01} className={styles.dummyImg} />
+              </div>
               <div className={styles.birth}></div>
+              <div className={styles.imgCount}>
+                0{currentImageIndex + 1} / 0{images.length}
+              </div>
             </div>
             <button type="button" className={styles.goBtn} onClick={goToSelect}>
               <span>GO</span>
