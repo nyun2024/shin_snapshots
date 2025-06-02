@@ -285,6 +285,20 @@
   }
 }
 
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+.blink {
+  animation: blink 1.8s infinite;
+}
+
 .layerMobile {
   position: fixed;
   top: 0;
@@ -312,13 +326,13 @@
   }
   .layerContent {
     text-align: center;
-    @include font-style($font-normal, 16px, 400, #222);
+    @include font-style($font-normal, 17px, 400, #222);
     padding: 36px 0 36px;
     border-bottom: 1px solid #b7b7b7;
   }
   .closeBtn {
     width: 100%;
     height: 50px;
-    @include font-style($font-normal, 16px, 400, $blue);
+    @include font-style($font-normal, 17px, 700, $blue);
   }
 }

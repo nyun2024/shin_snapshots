@@ -47,6 +47,7 @@ const WebCam = () => {
   const [isCounting, setIsCounting] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("no filter");
   const [isOpen, setIsOpen] = useState(true);
+  const [isBlinking, setIsBlinking] = useState(true);
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -91,6 +92,7 @@ const WebCam = () => {
   const startCountdown = () => {
     if (images.length >= MAX_PHOTOS || isCounting) return;
 
+    setIsBlinking(false);
     setIsCounting(true);
     setCountdown(3);
 
@@ -256,7 +258,7 @@ const WebCam = () => {
               onClick={startCountdown}
               disabled={isCounting || images.length >= MAX_PHOTOS}
             >
-              Click
+              <span className={isBlinking && [styles.blink]}>Click</span>
             </button>
             <div className={styles.webCamFrame} ref={containerRef}>
               {type === "blue" &&

@@ -73,7 +73,7 @@
       font-weight: 400;
     }
     .replayBtn {
-      background-color: #ccc;
+      background-color: #c7c7c7;
       color: #222;
     }
   }
@@ -99,7 +99,7 @@
       }
     }
     .congratulationText {
-      height: 163px;
+      height: 157px;
       padding: 26px 29px 26px;
       span {
         @include font-style($font-hand, 36px, 400, #fff);
