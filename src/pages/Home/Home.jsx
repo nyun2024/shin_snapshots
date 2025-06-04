@@ -53,7 +53,7 @@ const Home = () => {
     if (!isLoading) {
       const interval = setInterval(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-      }, 3600);
+      }, 3000);
 
       return () => clearInterval(interval);
     }

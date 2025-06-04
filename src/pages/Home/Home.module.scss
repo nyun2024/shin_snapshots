@@ -6,11 +6,16 @@
 }
 
 .title {
-  @include font-style($font-eng-dispCmpBook, 65px, 400, $yellow);
+  @include font-style(
+    $font-eng-dispCmpBook,
+    clamp(59px, 15.5vw, 80px),
+    400,
+    $yellow
+  );
   letter-spacing: 1%;
   text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
   text-align: center;
-  line-height: 62px;
+  line-height: clamp(57px, 15.4vw, 81px);
   margin-bottom: 20px;
 }
 
@@ -20,6 +25,9 @@
   max-width: 600px;
   transform: translateX(-10px);
   margin: 0 auto;
+  @media (min-width: 600px) {
+    transform: translateX(0);
+  }
   .imgWrap {
     padding: 0 13.2%;
     text-align: center;
@@ -69,10 +77,10 @@
     left: 50%;
   }
   .birth {
-    width: 19vw;
-    height: 19.5vw;
-    max-width: 110px;
-    max-height: 114px;
+    width: 20vw;
+    height: 20.7vw;
+    max-width: 124px;
+    max-height: 130px;
     background-image: url(../../assets/img/home/birth_star.png);
     background-size: cover;
     background-repeat: no-repeat;
@@ -80,16 +88,16 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    left: 10.7%;
-    top: -2%;
+    left: clamp(1vw, 9.7vw, 54px);
+    top: -2.5vw;
     z-index: 11;
   }
   .goBtn {
-    width: 31vw;
-    height: 31vw;
+    width: 34vw;
+    height: 34vw;
     max-width: 180px;
     max-height: 180px;
-    padding: clamp(7px, 4.2vw, 23px);
+    padding: clamp(7px, 4.1vw, 21px);
     border-radius: 50%;
     position: absolute;
     bottom: -5%;
@@ -118,7 +126,7 @@
       background-color: $yellow;
       @include font-style(
         $font-eng-big,
-        clamp(18px, 9.8vw, 62px),
+        clamp(18px, 11.5vw, 66px),
         400,
         $dark_navy
       );
@@ -140,22 +148,34 @@
   }
   .homeMainWrap {
     width: 100%;
+    min-width: 400px;
     transform: translateX(0);
     margin: 0;
   }
   .title {
-    font-size: 92px;
+    font-size: clamp(60px, 8.5vw, 92px);
     text-align: left;
-    line-height: 93px;
+    line-height: clamp(61px, 8.6vw, 94px);
     letter-spacing: 2%;
     margin-bottom: 20px;
+    white-space: nowrap;
     & > div:last-child {
-      padding-left: 115px;
+      padding-left: clamp(3.5vw, 10vw, 115px);
     }
   }
+  .birth {
+    width: 12vw;
+    height: 12.7vw;
+    left: clamp(30px, 9vw, 55px);
+    top: clamp(-2vw, -15px, -20px);
+  }
   .goBtn {
-    width: 20vw;
-    height: 20vw;
+    width: 18vw;
+    height: 18vw;
+    padding: clamp(2px, 2.1vw, 21px);
+    span {
+      font-size: clamp(18px, 6.5vw, 68px);
+    }
   }
   .shinProfile {
     width: 90%;
@@ -183,9 +203,11 @@
     }
   }
   .contentsInfo {
+    width: 100%;
+    max-width: 476px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
   }
 }
