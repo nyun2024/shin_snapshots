@@ -96,7 +96,7 @@ const SaveEditSnapshot = () => {
       } else {
         const link = document.createElement("a");
         link.href = dataURL;
-        link.download = "snapshot.png";
+        link.download = "shin-snapshot.png";
         link.click();
       }
     } catch (err) {
