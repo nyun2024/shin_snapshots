@@ -16,9 +16,16 @@ const Header = () => {
       <div className={styles.headerInner}>
         <div className={styles.ect}>Esper</div>
         <div className={styles.mainLink}>
-          <Link to={"/"}>ASAKURA SHIN</Link>
+          <Link to={"/"}>ASAKURA SHIN DAYS</Link>
         </div>
-        <div className={styles.ect}>Shin days</div>
+        <div className={styles.ect}>
+          <a
+            href="https://x.com/kws04394?s=21&t=stsc6fZOdwcWZCW8N_3nwA"
+            target="_blank"
+          >
+            @kws04394
+          </a>
+        </div>
       </div>
     </header>
   );
