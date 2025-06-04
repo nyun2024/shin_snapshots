@@ -88,16 +88,16 @@
     align-items: center;
     justify-content: center;
     position: absolute;
-    left: clamp(1vw, 9.7vw, 54px);
+    left: clamp(1vw, 10vw, 54px);
     top: -2.5vw;
     z-index: 11;
   }
   .goBtn {
-    width: 34vw;
-    height: 34vw;
+    width: 32.5vw;
+    height: 32.5vw;
     max-width: 180px;
     max-height: 180px;
-    padding: clamp(7px, 4.1vw, 21px);
+    padding: clamp(7px, 4vw, 21px);
     border-radius: 50%;
     position: absolute;
     bottom: -5%;

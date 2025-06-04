@@ -45,7 +45,7 @@
       margin-bottom: 10px;
     }
     textarea {
-      width: 300px;
+      width: 310px;
       height: 120px;
       @include font-style($font-normal, 17px, 400, #222);
       border-radius: 3px;
@@ -55,7 +55,7 @@
   }
   .editSaveEtc {
     width: 100%;
-    max-width: 300px;
+    max-width: 310px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -85,17 +85,17 @@
     justify-content: center;
     flex-direction: column;
     .resultFrameWrap {
-      width: 300px;
-      height: 962px;
+      width: 310px;
+      height: 996px;
     }
     .capturedImgWrap {
-      padding: 36px 25px 0 25px;
-      gap: 24px;
+      padding: 37px 26px 0 26px;
+      gap: 25px;
     }
     &.isHorMobileOnly {
       .capturedImgWrap {
-        padding: 36px 24px 0 25px;
-        gap: 25px;
+        padding: 37px 26px 0 26px;
+        gap: 27px;
       }
     }
     .congratulationText {
@@ -114,10 +114,6 @@
       div {
         margin: 20px 0 10px;
       }
-      textarea {
-        width: 300px;
-        height: 120px;
-      }
     }
     .buttonContainer {
       gap: 12px;
@@ -129,7 +125,7 @@
     }
     &.white {
       .resultFrameWrap {
-        width: 300px;
+        width: 310px;
         height: 450px;
       }
       .capturedImgWrap {
