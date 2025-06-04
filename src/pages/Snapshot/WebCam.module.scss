@@ -157,7 +157,7 @@
     button {
       height: 40px;
       padding: 5px 16px;
-      @include font-style($font-normal, 18px, 400, #222);
+      @include font-style($font-normal, 18px, 700, #222);
       background-color: #fff;
       display: inline-flex;
       align-items: center;
@@ -280,7 +280,6 @@
         height: 28px;
         padding: 5px 10px;
         @include font-style($font-normal, 15px, 700, #222);
-        letter-spacing: 1px;
       }
     }
   }
