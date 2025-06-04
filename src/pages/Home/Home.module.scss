@@ -2,7 +2,7 @@
 @use "../../assets/styles/mixin.scss" as *;
 
 .homeContents {
-  padding-top: 55px;
+  padding-top: 52px;
 }
 
 .title {
@@ -12,7 +12,7 @@
     400,
     $yellow
   );
-  letter-spacing: 1%;
+  letter-spacing: 1px;
   text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.3);
   text-align: center;
   line-height: clamp(57px, 15.4vw, 81px);
@@ -93,8 +93,8 @@
     z-index: 11;
   }
   .goBtn {
-    width: 32.5vw;
-    height: 32.5vw;
+    width: 31.5vw;
+    height: 31.5vw;
     max-width: 180px;
     max-height: 180px;
     padding: clamp(7px, 4vw, 21px);
@@ -126,7 +126,7 @@
       background-color: $yellow;
       @include font-style(
         $font-eng-big,
-        clamp(18px, 11.5vw, 66px),
+        clamp(18px, 10.5vw, 62px),
         400,
         $dark_navy
       );
@@ -156,7 +156,7 @@
     font-size: clamp(60px, 8.5vw, 92px);
     text-align: left;
     line-height: clamp(61px, 8.6vw, 94px);
-    letter-spacing: 2%;
+    letter-spacing: 1px;
     margin-bottom: 20px;
     white-space: nowrap;
     & > div:last-child {
@@ -174,7 +174,7 @@
     height: 18vw;
     padding: clamp(2px, 2.1vw, 21px);
     span {
-      font-size: clamp(18px, 6.5vw, 68px);
+      font-size: clamp(18px, 6.2vw, 62px);
     }
   }
   .shinProfile {

@@ -86,7 +86,7 @@
     flex-direction: column;
     .resultFrameWrap {
       width: 310px;
-      height: 996px;
+      height: 995px;
     }
     .capturedImgWrap {
       padding: 37px 26px 0 26px;
@@ -126,13 +126,13 @@
     &.white {
       .resultFrameWrap {
         width: 310px;
-        height: 450px;
+        height: 465px;
       }
       .capturedImgWrap {
         padding: 100px 25px 29px 25px;
         gap: 9px 11px;
         flex-direction: row;
-        height: 450px;
+        height: 465px;
         align-items: flex-start;
         flex-wrap: wrap;
         img {

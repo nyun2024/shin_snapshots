@@ -25,6 +25,11 @@ const FrameTypeButton = ({ type, onClick }) => {
     setIsOpen(false);
   };
 
+  const capitalizeFirstLetter = (str) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -45,7 +50,7 @@ const FrameTypeButton = ({ type, onClick }) => {
           styles.frameTypeButton
         )}
       >
-        <div className={styles.frameName}>{type}</div>
+        <div className={styles.frameName}>{capitalizeFirstLetter(type)}</div>
         <div
           className={classNames(
             styles.imgWrap,
