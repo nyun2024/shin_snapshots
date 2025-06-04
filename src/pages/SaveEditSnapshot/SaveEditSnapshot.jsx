@@ -74,7 +74,7 @@ const SaveEditSnapshot = () => {
         useCORS: true,
         allowTaint: true,
         backgroundColor: null,
-        scale: 3,
+        scale: 4,
       });
 
       const dataURL = canvas.toDataURL("image/png");

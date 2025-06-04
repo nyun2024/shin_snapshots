@@ -117,8 +117,10 @@ const WebCam = () => {
 
     const vw = video.videoWidth;
     const vh = video.videoHeight;
-    const cw = (canvas.width = video.clientWidth);
-    const ch = (canvas.height = video.clientHeight);
+    const scale = 2; // 원하는 배율 (2배 해상도)
+
+    const cw = (canvas.width = video.clientWidth * scale);
+    const ch = (canvas.height = video.clientHeight * scale);
 
     const ratioDisplay = cw / ch;
     const ratioVideo = vw / vh;
@@ -138,8 +140,8 @@ const WebCam = () => {
 
     if (isHorMobileOnly) {
       // 캔버스를 세로 기준으로 90도 회전
-      canvas.width = video.clientHeight;
-      canvas.height = video.clientWidth;
+      canvas.width = video.clientHeight * scale;
+      canvas.height = video.clientWidth * scale;
 
       ctx.save();
       ctx.translate(canvas.width / 2, canvas.height / 2); // 중심 이동
@@ -153,16 +155,16 @@ const WebCam = () => {
         sy,
         sWidth,
         sHeight,
-        -video.clientWidth / 2,
-        -video.clientHeight / 2,
-        video.clientWidth,
-        video.clientHeight
+        (-video.clientWidth * scale) / 2,
+        (-video.clientHeight * scale) / 2,
+        video.clientWidth * scale,
+        video.clientHeight * scale
       );
       ctx.restore();
     } else {
       // 기존 데스크탑 및 태블릿용 처리
-      canvas.width = video.clientWidth;
-      canvas.height = video.clientHeight;
+      canvas.width = video.clientWidth * scale;
+      canvas.height = video.clientHeight * scale;
 
       ctx.save();
       ctx.translate(canvas.width, 0);
@@ -185,7 +187,7 @@ const WebCam = () => {
     const filteredData = applyFilter(imageData, selectedFilter);
     ctx.putImageData(filteredData, 0, 0);
 
-    const dataURL = canvas.toDataURL("image/jpeg");
+    const dataURL = canvas.toDataURL("image/jpeg", 0.92);
     const newImages = [...images, dataURL].slice(0, MAX_PHOTOS);
     setImages(newImages);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newImages));
